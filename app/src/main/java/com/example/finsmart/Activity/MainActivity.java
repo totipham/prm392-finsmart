@@ -1,4 +1,4 @@
-package com.example.finsmart;
+package com.example.finsmart.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -11,6 +11,7 @@ import com.example.finsmart.Fragment.DashboardFragment;
 import com.example.finsmart.Fragment.HomeFragment;
 import com.example.finsmart.Fragment.ProfileFragment;
 import com.example.finsmart.Fragment.WalletFragment;
+import com.example.finsmart.R;
 import com.example.finsmart.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     WalletFragment walletFragment;
     DashboardFragment dashboardFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
