@@ -7,6 +7,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.example.finsmart.Fragment.DashboardFragment;
+import com.example.finsmart.Fragment.HomeFragment;
+import com.example.finsmart.Fragment.ProfileFragment;
+import com.example.finsmart.Fragment.WalletFragment;
 import com.example.finsmart.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
