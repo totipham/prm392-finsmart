@@ -2,13 +2,28 @@ package com.example.finsmart.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.example.finsmart.Adapter.TransactionListAdapter;
+import com.example.finsmart.Adapter.WalletListAdapter;
+import com.example.finsmart.Model.Transaction;
+import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +31,12 @@ import com.example.finsmart.R;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+    ViewPager2 viewPager;
+    LinearLayout sliderDotspanel;
+    private int dotscount;
+    private ImageView[] dots;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +82,88 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.activity_home, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        generateWalletList(view);
+        generateTransactionList(view);
+    }
+
+    void generateTransactionList(View view) {
+        List<Transaction> transactionList = new ArrayList<>();
+
+        Transaction t1 = new Transaction("t1", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
+        Transaction t2 = new Transaction("t2", "McDonald", Transaction.TransactionType.PAYMENT, true, "34.10", R.drawable.ticket_icon);
+        Transaction t3 = new Transaction("t3", "Gym", Transaction.TransactionType.DEPOSIT, false, "40.99", R.drawable.ticket_icon);
+        Transaction t4 = new Transaction("t4", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
+
+        transactionList.add(t1);
+        transactionList.add(t2);
+        transactionList.add(t3);
+        transactionList.add(t4);
+
+        TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
+        RecyclerView transactionHistoryView = (RecyclerView) view.findViewById(R.id.rview_transaction_history);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        transactionHistoryView.setLayoutManager(layoutManager);
+        transactionHistoryView.setAdapter(transactionListAdapter);
+    }
+
+    void generateWalletList(View view) {
+        List<Wallet> walletList = new ArrayList<>();
+
+        Wallet w1 = new Wallet("w1", "Shopping", "1000000");
+        Wallet w2 = new Wallet("w2", "Education", "1000000");
+        Wallet w3 = new Wallet("w3", "Investment", "1000000");
+
+        walletList.add(w1);
+        walletList.add(w2);
+        walletList.add(w3);
+
+        viewPager = (ViewPager2) view.findViewById(R.id.view_pager);
+        sliderDotspanel = (LinearLayout) view.findViewById(R.id.slider_dots);
+
+        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
+
+        viewPager.setAdapter(walletListAdapter);
+
+        dotscount = walletListAdapter.getItemCount();
+        dots = new ImageView[dotscount];
+
+        for (int i = 0; i < dotscount; i++) {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+
+//        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotscount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+
 }
