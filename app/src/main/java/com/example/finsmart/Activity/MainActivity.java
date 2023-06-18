@@ -1,8 +1,10 @@
-package com.example.finsmart;
+package com.example.finsmart.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.finsmart.R;
 
 public class MainActivity extends AppCompatActivity {
 

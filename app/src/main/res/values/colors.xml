@@ -8,8 +8,12 @@
     <color name="black">#111827</color>
     <color name="primary_dark">#013137</color>
     <color name="grey_text_2">#858585</color>
+    <color name="grey_text_3">#A5A5A5</color>
     <color name="pure_black">#0D0D0D</color>
     <color name="red">#F5F5F5</color>
     <color name="border">#DBDBDB</color>
     <color name="black_text">#212121</color>
+    <color name="grey_description">#5A5B78</color>
+    <color name="poseidon">#004852</color>
+    <color name="spanish_gray">#969696</color>
 </resources>
