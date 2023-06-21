@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.finsmart.Fragment.DashboardFragment;
 import com.example.finsmart.Fragment.HomeFragment;
@@ -37,20 +38,15 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(homeFragment);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-//            switch (item.getItemId()){
-//                case R.id.home:
-//                    replaceFragment(homeFragment);
-//                    break;
-//                case R.id.dashboard:
-//                    replaceFragment(dashboardFragment);
-//                    break;
-//                case R.id.wallet:
-//                    replaceFragment(walletFragment);
-//                    break;
-//                case R.id.profile:
-//                    replaceFragment(profileFragment);
-//                    break;
-//            }
+            if(item.getItemId() == R.id.home){
+                replaceFragment(homeFragment);
+            }else if(item.getItemId() == R.id.dashboard){
+                replaceFragment(dashboardFragment);
+            }else if(item.getItemId() == R.id.wallet){
+                replaceFragment(walletFragment);
+            }else if(item.getItemId() == R.id.profile){
+                replaceFragment(profileFragment);
+            }
             return true;
         });
     }
