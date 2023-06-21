@@ -1,4 +1,4 @@
-package Fragment;
+package com.example.finsmart.Fragment;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.finsmart.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Amount_transfer#newInstance} factory method to
+ * Use the {@link AmountTransferFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Amount_transfer extends Fragment {
+public class AmountTransferFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Amount_transfer extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Amount_transfer() {
+    public AmountTransferFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class Amount_transfer extends Fragment {
      * @return A new instance of fragment Amount_transfer.
      */
     // TODO: Rename and change types and number of parameters
-    public static Amount_transfer newInstance(String param1, String param2) {
-        Amount_transfer fragment = new Amount_transfer();
+    public static AmountTransferFragment newInstance(String param1, String param2) {
+        AmountTransferFragment fragment = new AmountTransferFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

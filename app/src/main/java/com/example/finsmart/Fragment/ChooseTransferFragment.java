@@ -1,4 +1,4 @@
-package Fragment;
+package com.example.finsmart.Fragment;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.finsmart.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Add_new_card#newInstance} factory method to
+ * Use the {@link ChooseTransferFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Add_new_card extends Fragment {
+public class ChooseTransferFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class Add_new_card extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Add_new_card() {
+    public ChooseTransferFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class Add_new_card extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Add_new_card.
+     * @return A new instance of fragment choose_transfer.
      */
     // TODO: Rename and change types and number of parameters
-    public static Add_new_card newInstance(String param1, String param2) {
-        Add_new_card fragment = new Add_new_card();
+    public static ChooseTransferFragment newInstance(String param1, String param2) {
+        ChooseTransferFragment fragment = new ChooseTransferFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class Add_new_card extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_new_card, container, false);
+        return inflater.inflate(R.layout.fragment_choose_transfer, container, false);
     }
 }

@@ -4,7 +4,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Fragment.Amount_transfer">
+    tools:context=".Fragment.AmountTransferFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -33,7 +33,7 @@
         app:srcCompat="?attr/homeAsUpIndicator" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/line"
         android:layout_width="350dp"
         android:layout_height="1dp"
         android:layout_marginTop="84dp"
@@ -57,21 +57,16 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <Button
         android:id="@+id/btn_continue"
-        android:layout_width="288dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="296dp"
-        android:background="@color/primary"
-        android:backgroundTint="@color/primary_dark"
+        style="@style/button"
+        android:layout_marginBottom="340dp"
         android:text="Continue"
-        android:textColor="@color/black_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
