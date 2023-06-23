@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="90dp"
     tools:context=".Activity.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,11 +84,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="20dp"
+            android:lineHeight="32dp"
             android:text="@string/total_balance"
             android:textColor="@color/grey_text_3"
-            android:textSize="21sp"
-            android:lineHeight="32dp"
             android:textFontWeight="600"
+            android:textSize="21sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/slider_dots" />
 
