@@ -21,8 +21,8 @@ public class LoginActivity extends AppCompatActivity {
         forgetPassWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(LoginActivity.this, ForgetPassWordActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, ForgetPassWordActivity.class);
+                startActivity(intent);
 
 
             }
@@ -32,8 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
 
 
             }
