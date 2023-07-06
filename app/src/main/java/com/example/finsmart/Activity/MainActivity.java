@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import com.example.finsmart.Fragment.DashboardFragment;
 import com.example.finsmart.Fragment.HomeFragment;
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     WalletFragment walletFragment;
     DashboardFragment dashboardFragment;
+    View topNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +37,29 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(homeFragment);
+        topNav = findViewById(R.id.top_nav);
+        topNav.setVisibility(View.GONE);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.home){
                 replaceFragment(homeFragment);
+                topNav.setVisibility(View.GONE);
             }else if(item.getItemId() == R.id.dashboard){
                 replaceFragment(dashboardFragment);
+                topNav.setVisibility(View.VISIBLE);
             }else if(item.getItemId() == R.id.wallet){
                 replaceFragment(walletFragment);
+                topNav.setVisibility(View.VISIBLE);
             }else if(item.getItemId() == R.id.profile){
                 replaceFragment(profileFragment);
+                topNav.setVisibility(View.VISIBLE);
             }
             return true;
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
