@@ -115,9 +115,9 @@ public class HomeFragment extends Fragment {
     void generateWalletList(View view) {
         List<Wallet> walletList = new ArrayList<>();
 
-        Wallet w1 = new Wallet("w1", "Shopping", "1000000");
-        Wallet w2 = new Wallet("w2", "Education", "1000000");
-        Wallet w3 = new Wallet("w3", "Investment", "1000000");
+        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
+        Wallet w2 = new Wallet("w2", "Education", 1000000);
+        Wallet w3 = new Wallet("w3", "Investment", 1000000);
 
         walletList.add(w1);
         walletList.add(w2);

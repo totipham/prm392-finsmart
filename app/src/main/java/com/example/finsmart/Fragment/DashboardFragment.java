@@ -2,13 +2,24 @@ package com.example.finsmart.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.finsmart.Adapter.ChooseRecipientAdapter;
+import com.example.finsmart.Adapter.ChooseWalletAdapter;
+import com.example.finsmart.Model.User;
+import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +72,57 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(R.layout.fragment_transfer_target, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        generateWalletScrollList(view);
+        generateRecipientList(view);
+    }
+
+    void generateWalletScrollList(View view) {
+        List<Wallet> walletList = new ArrayList<>();
+
+
+        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
+        Wallet w2 = new Wallet("w2", "Education", 1000000);
+        Wallet w3 = new Wallet("w3", "Investment", 1000000);
+
+        walletList.add(w1);
+        walletList.add(w2);
+        walletList.add(w3);
+
+        ChooseWalletAdapter walletListAdapter = new ChooseWalletAdapter(walletList);
+        RecyclerView walletScrollList = (RecyclerView) view.findViewById(R.id.rview_wallet_scroll);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        walletScrollList.setLayoutManager(layoutManager);
+        walletScrollList.setAdapter(walletListAdapter);
+    }
+
+    void generateRecipientList(View view) {
+        List<User> recipientList = new ArrayList<>();
+
+        User u1 = new User("u1", "John", "Nguyen", "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200");
+        User u2 = new User("u2", "Jane", "Doe", "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200");
+        User u3 = new User("u3", "Niece", "Smith", "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200");
+        User u4 = new User("u4", "Nephew", "Smith", "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200");
+        User u5 = new User("u5", "Niece", "Smith", "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200");
+
+        recipientList.add(u1);
+        recipientList.add(u2);
+        recipientList.add(u3);
+        recipientList.add(u4);
+        recipientList.add(u5);
+
+        ChooseRecipientAdapter recipientListAdapter = new ChooseRecipientAdapter(recipientList);
+        RecyclerView recipientListScroll = (RecyclerView) view.findViewById(R.id.rview_recipient_scroll);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        recipientListScroll.setLayoutManager(layoutManager);
+        recipientListScroll.setAdapter(recipientListAdapter);
+
     }
 }
