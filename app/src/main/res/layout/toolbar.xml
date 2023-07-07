@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/white">
+
     <RelativeLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
@@ -11,16 +12,22 @@
         android:paddingHorizontal="35dp"
         android:paddingTop="39dp"
         android:paddingBottom="15dp">
+
         <ImageView
             android:id="@+id/top_nav_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow_left"/>
+            android:src="@drawable/arrow_left" />
+
         <TextView
+            android:id="@+id/top_header_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text=""/>
+            android:textColor="@color/black_text"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:text="" />
     </RelativeLayout>
 
     <View

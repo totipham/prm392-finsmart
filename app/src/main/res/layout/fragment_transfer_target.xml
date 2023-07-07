@@ -10,49 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/transfer_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/add_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="160dp"
-                android:text="Transfer"
-                android:textColor="@color/pure_black"
-                android:textFontWeight="600"
-                android:textSize="23sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/btn_transfer_back"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="16dp"
-                android:background="?android:attr/selectableItemBackground"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="?attr/homeAsUpIndicator" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="34dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/border"
-                app:layout_constraintTop_toBottomOf="@id/btn_transfer_back"
-                tools:layout_editor_absoluteX="34dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <TextView
             android:id="@+id/tv_choose_wallet"
             android:layout_width="wrap_content"
@@ -64,7 +21,7 @@
             android:textFontWeight="600"
             android:layout_marginTop="36dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/transfer_header" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.recyclerview.widget.RecyclerView
