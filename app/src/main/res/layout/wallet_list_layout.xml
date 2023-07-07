@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_wallet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wallet" />
+
+    <TextView
+        android:id="@+id/tv_wallet_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="132dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textFontWeight="400"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_wallet"
+        app:layout_constraintStart_toStartOf="@+id/img_wallet" />
+
+    <TextView
+        android:id="@+id/tv_wallet_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="68dp"
+        android:fontFamily="@font/poppins"
+        android:lineHeight="39dp"
+        android:text="10,000,000"
+        android:textColor="@color/black_text"
+        android:textFontWeight="600"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_wallet"
+        app:layout_constraintStart_toStartOf="@+id/img_wallet" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

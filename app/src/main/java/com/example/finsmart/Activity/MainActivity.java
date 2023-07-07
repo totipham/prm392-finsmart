@@ -40,17 +40,19 @@ public class MainActivity extends AppCompatActivity {
         topNav = findViewById(R.id.top_nav);
         topNav.setVisibility(View.GONE);
 
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if(item.getItemId() == R.id.home){
+            if (item.getItemId() == R.id.home) {
                 replaceFragment(homeFragment);
                 topNav.setVisibility(View.GONE);
-            }else if(item.getItemId() == R.id.dashboard){
+            } else if (item.getItemId() == R.id.dashboard) {
+                binding.topNav.topHeaderTitle.setText("Transfer");
                 replaceFragment(dashboardFragment);
                 topNav.setVisibility(View.VISIBLE);
-            }else if(item.getItemId() == R.id.wallet){
+            } else if (item.getItemId() == R.id.wallet) {
                 replaceFragment(walletFragment);
                 topNav.setVisibility(View.VISIBLE);
-            }else if(item.getItemId() == R.id.profile){
+            } else if (item.getItemId() == R.id.profile) {
                 replaceFragment(profileFragment);
                 topNav.setVisibility(View.VISIBLE);
             }
