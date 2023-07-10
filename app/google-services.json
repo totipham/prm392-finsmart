@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1040602416434",
+    "project_id": "finsmart-927f8",
+    "storage_bucket": "finsmart-927f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1040602416434:android:990d403a5329c85ea7c32b",
+        "android_client_info": {
+          "package_name": "com.example.finsmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1040602416434-gcqm8a2it5jvjaj7s94urrjqafjkchfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTeojUyVF22TFYqseAdnFiLl5jXpLVP9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1040602416434-gcqm8a2it5jvjaj7s94urrjqafjkchfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
