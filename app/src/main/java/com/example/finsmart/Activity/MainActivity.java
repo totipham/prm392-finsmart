@@ -50,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(dashboardFragment);
                 topNav.setVisibility(View.VISIBLE);
             } else if (item.getItemId() == R.id.wallet) {
+                binding.topNav.topHeaderTitle.setText("Wallets");
                 replaceFragment(walletFragment);
                 topNav.setVisibility(View.VISIBLE);
             } else if (item.getItemId() == R.id.profile) {
+                binding.topNav.topHeaderTitle.setText("Profile");
                 replaceFragment(profileFragment);
                 topNav.setVisibility(View.VISIBLE);
             }

@@ -3,11 +3,15 @@ package com.example.finsmart.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
 
 /**
@@ -47,7 +51,7 @@ public class WalletFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    ImageButton imageButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +59,33 @@ public class WalletFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
+    public void GetAllWallet(){
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View dogshit = inflater.inflate(R.layout.fragment_wallet, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wallet, container, false);
+        AddNewWalletFragment addNewWalletFragment = new AddNewWalletFragment();
+        imageButton = (ImageButton) dogshit.findViewById(R.id.add_wallet_btn);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).replaceFragment(addNewWalletFragment);
+            }
+        });
+        return dogshit;
     }
+
+//    public void replaceFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = this.getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.frameLayout, fragment);
+//        fragmentTransaction.commit();
+//    }
 }

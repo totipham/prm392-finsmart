@@ -3,9 +3,9 @@ package com.example.finsmart.Model;
 public class Wallet {
     private String walletId;
     private String name;
-    private float balance;
+    private double balance;
 
-    public Wallet(String walletId, String name, float balance) {
+    public Wallet(String walletId, String name, double balance) {
         this.walletId = walletId;
         this.name = name;
         this.balance = balance;
@@ -27,11 +27,11 @@ public class Wallet {
         this.name = name;
     }
 
-    public float getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 }

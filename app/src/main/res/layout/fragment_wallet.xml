@@ -12,48 +12,12 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="141dp"
-        android:text="Wallets"
-        android:textColor="@color/pure_black"
-        android:textSize="23sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="45dp"
-        android:src="@drawable/icon_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/line"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="273dp"
+        android:layout_marginBottom="592dp"
         android:fontFamily="@font/poppins"
         android:text="My Wallets"
         android:textColor="@color/pure_black"
@@ -63,17 +27,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="190dp"
         android:layout_height="130dp"
-        android:layout_marginStart="33dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="26dp"
         android:src="@drawable/wallet_v2"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/add_wallet_btn"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
@@ -89,7 +52,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <TextView
         android:id="@+id/textView6"
@@ -103,7 +66,7 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <TextView
         android:id="@+id/textView7"
@@ -151,13 +114,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="43dp"
-        android:layout_height="130dp"
-        android:layout_marginStart="41dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="26dp"
+    <ImageButton
+        android:id="@+id/add_wallet_btn"
+        android:layout_width="53dp"
+        android:layout_height="127dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/add_card_dash_button"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
         app:layout_constraintStart_toStartOf="parent"
