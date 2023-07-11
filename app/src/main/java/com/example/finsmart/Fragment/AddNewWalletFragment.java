@@ -4,11 +4,21 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.finsmart.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +35,7 @@ public class AddNewWalletFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    FirebaseFirestore db;
 
     public AddNewWalletFragment() {
         // Required empty public constructor
@@ -55,12 +66,49 @@ public class AddNewWalletFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        db = FirebaseFirestore.getInstance();
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View crap = inflater.inflate(R.layout.fragment_add_new_wallet, container, false);
+        TextView name = (TextView) crap.findViewById(R.id.txt_wallet);
+        EditText input = (EditText) crap.findViewById(R.id.edt_name);
+        EditText amount = (EditText) crap.findViewById(R.id.edt_amount);
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not used in this example
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(TextUtils.isEmpty(s)){
+                    name.setText("Name here");
+                }else{
+                    name.setText(s.toString());
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        Button confirm = (Button) crap.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> card = new HashMap<>();
+                card.put("name", name.getText().toString());
+                card.put("balance", Float.parseFloat(amount.getText().toString()));
+                db.collection("wallets").add(card);
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_new_wallet, container, false);
+        return crap;
     }
 }
