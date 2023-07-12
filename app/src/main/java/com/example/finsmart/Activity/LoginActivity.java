@@ -17,26 +17,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        forgetPassWord = (TextView)findViewById(R.id.txt_forget);
-        forgetPassWord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(LoginActivity.this, ForgetPassWordActivity.class);
-                //startActivity(intent);
-
-
-            }
+        forgetPassWord = findViewById(R.id.txt_forget);
+        forgetPassWord.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+            startActivity(intent);
         });
 
-        signUp = (TextView)findViewById(R.id.txt_signup);
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-
-
-            }
+        signUp = findViewById(R.id.txt_signup);
+        signUp.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
     }
 }
