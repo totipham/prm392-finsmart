@@ -10,13 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="35dp"
-        android:paddingTop="39dp"
+        android:paddingTop="20dp"
         android:paddingBottom="15dp">
 
         <ImageView
             android:id="@+id/top_nav_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:src="@drawable/arrow_left" />
 
         <TextView
@@ -27,7 +28,7 @@
             android:textColor="@color/black_text"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:text="" />
+            android:text="asd" />
     </RelativeLayout>
 
     <View
