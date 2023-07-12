@@ -28,7 +28,7 @@
             android:textColor="@color/black_text"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:text="asd" />
+            android:text="" />
     </RelativeLayout>
 
     <View
