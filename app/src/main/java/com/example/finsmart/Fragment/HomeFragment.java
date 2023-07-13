@@ -1,5 +1,6 @@
 package com.example.finsmart.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,12 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
 import com.example.finsmart.Model.Transaction;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     ViewPager2 viewPager;
+
+    public TextView name;
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
@@ -50,7 +57,12 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
 
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -81,8 +93,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_home, container, false);
+        View view = inflater.inflate(R.layout.activity_home, container, false);
+        return view;
     }
 
     @Override

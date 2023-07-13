@@ -1,5 +1,6 @@
 package com.example.finsmart.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,8 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.finsmart.Activity.LoginActivity;
+import com.example.finsmart.Activity.SignUpActivity;
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +41,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private LinearLayout user_preference;
     private LinearLayout user_logout;
 
-
+    private TextView email, name;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -80,10 +90,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mView = inflater.inflate(R.layout.fragment_profile, container, false);
         user_preference = (LinearLayout)mView.findViewById(R.id.user_preference);
         user_logout = (LinearLayout)mView.findViewById(R.id.user_logout);
-
         user_preference.setOnClickListener(this);
         user_logout.setOnClickListener(this);
 
+        //get email
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        if(mUser != null){
+            email = mView.findViewById(R.id.tv_email);
+            email.setText(mUser.getEmail());
+        }
         // Inflate the layout for this fragment
         return mView;
     }
@@ -94,6 +110,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (id == R.id.user_preference) {
             replaceFragment(ProfilePreference);
         } else if (id == R.id.user_logout) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
 
         }
     }
