@@ -8,7 +8,6 @@ public class User {
     private String lastName;
     private String amount;
     private String email;
-
     private String avatar;
 
     public User() {

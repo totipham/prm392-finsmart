@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
 
 public class WalletListAdapter extends RecyclerView.Adapter<WalletListAdapter.WalletListHolder> {
@@ -27,20 +29,16 @@ public class WalletListAdapter extends RecyclerView.Adapter<WalletListAdapter.Wa
         Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.wallet_list_layout, parent, false);
 
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Toast.makeText(context, "Wallet: " + wallets.get(position).getName(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         return new WalletListHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull WalletListHolder holder, int position) {
+        Currency currency = Currency.getInstance("VND");
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(currency);
         holder.tvWalletName.setText(wallets.get(position).getName() + " Wallet");
-        holder.tvWalletBalance.setText("$" + wallets.get(position).getBalance());
+        holder.tvWalletBalance.setText(format.format(wallets.get(position).getBalance()));
     }
 
     @Override

@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finsmart.Adapter.ChooseRecipientAdapter;
 import com.example.finsmart.Adapter.ChooseWalletAdapter;
@@ -20,7 +22,6 @@ import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +46,9 @@ public class DashboardFragment extends Fragment {
     private String mParam2;
 
     FirebaseFirestore db;
+    private ArrayList<Wallet> walletList;
+    ProgressBar progressBar;
+
     public DashboardFragment() {
         // Required empty public constructor
     }
@@ -80,45 +84,49 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View crap = inflater.inflate(R.layout.fragment_transfer_target, container, false);
-        generateWalletScrollList(crap);
-
-        return crap;
+        View view = inflater.inflate(R.layout.fragment_transfer_target, container, false);
+        progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        walletList = new ArrayList<>();
+        loadWalletList();
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //generateWalletScrollList(view);
         generateRecipientList(view);
     }
 
-    void generateWalletScrollList(View view) {
-        List<Wallet> walletList = new ArrayList<>();
+    private void loadWalletList() {
+        db.collection("wallets").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    walletList.clear();
 
-        db.collection("wallets")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Log.d("Firebase", document.getId() + " => " + document.getData());
-                                Wallet w = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                                walletList.add(w);
-                            }
-                            RecyclerView walletScrollList = (RecyclerView) view.findViewById(R.id.rview_wallet_scroll);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
-                            ChooseWalletAdapter walletListAdapter = new ChooseWalletAdapter(walletList);
-                            walletScrollList.setAdapter(walletListAdapter);
-                            walletScrollList.setLayoutManager(layoutManager);
-                        } else {
-                            Log.w("Fiewbase", "Error getting documents.", task.getException());
-                        }
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
+                        walletList.add(wallet);
                     }
-                });
+
+                    updateWalletRecyclerView();
+                } else {
+                    Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateWalletRecyclerView() {
+        RecyclerView walletScrollList = (RecyclerView) getView().findViewById(R.id.rview_wallet_scroll);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        ChooseWalletAdapter walletListAdapter = new ChooseWalletAdapter(walletList);
+        walletScrollList.setAdapter(walletListAdapter);
+        walletScrollList.setLayoutManager(layoutManager);
+
+        progressBar.setVisibility(View.GONE);
     }
 
     void generateRecipientList(View view) {
@@ -144,4 +152,5 @@ public class DashboardFragment extends Fragment {
         recipientListScroll.setAdapter(recipientListAdapter);
 
     }
+
 }
