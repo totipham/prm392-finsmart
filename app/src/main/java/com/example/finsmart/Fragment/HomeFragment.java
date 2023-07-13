@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finsmart.Adapter.TransactionListAdapter;
@@ -29,7 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -63,15 +66,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -106,7 +100,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        generateWalletList(view);
         generateTransactionList(view);
     }
 
@@ -132,6 +125,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateWalletRecyclerView() {
+        Currency currency = Currency.getInstance("VND");
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(currency);
+        ((TextView) getView().findViewById(R.id.tv_balance_amount)).setText(format.format(totalBalance));
+
         viewPager = (ViewPager2) getView().findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) getView().findViewById(R.id.slider_dots);
         WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
@@ -202,42 +200,6 @@ public class HomeFragment extends Fragment {
         walletList.add(w1);
         walletList.add(w2);
         walletList.add(w3);
-
-//        viewPager = (ViewPager2) view.findViewById(R.id.view_pager);
-//        sliderDotspanel = (LinearLayout) view.findViewById(R.id.slider_dots);
-//        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
-//        viewPager.setAdapter(walletListAdapter);
-//        dotscount = walletListAdapter.getItemCount();
-//        dots = new ImageView[dotscount];
-//
-//        for (int i = 0; i < dotscount; i++) {
-//            dots[i] = new ImageView(getContext());
-//            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            params.setMargins(8, 0, 8, 0);
-//            sliderDotspanel.addView(dots[i], params);
-//        }
-//
-//        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                for (int i = 0; i < dotscount; i++) {
-//                    dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
-//                }
-//
-//                dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
     }
 
 
