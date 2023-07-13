@@ -15,11 +15,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
             android:text="@string/choose_wallet"
-            android:textSize="20sp"
             android:textColor="@color/black_text"
             android:textFontWeight="600"
-            android:layout_marginTop="36dp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,8 +27,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rview_wallet_scroll"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
+            android:layout_height="250dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +60,7 @@
             tools:layout_editor_absoluteX="0dp" />
 
         <Button
-            android:id="@+id/btn_continue"
+            android:id="@+id/btn_back"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="60dp"
@@ -75,6 +74,18 @@
             app:layout_constraintTop_toBottomOf="@id/rview_recipient_scroll"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="83dp"
+            android:layout_marginBottom="95dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_choose_recipient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/rview_wallet_scroll"
+            app:layout_constraintTop_toBottomOf="@+id/tv_choose_wallet" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

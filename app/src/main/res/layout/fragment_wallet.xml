@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="190dp"
-        android:layout_height="130dp"
+        android:layout_width="204dp"
+        android:layout_height="143dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="26dp"
         android:src="@drawable/wallet_v2"
@@ -74,21 +74,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="17dp"
-        android:text="Default Wallet"
         android:textColor="@color/pure_black"
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:width="334dp"
         android:height="57dp"
-        android:backgroundTint="@color/grey_background"
+        android:background="@drawable/normal_button_bg"
         android:text="EDIT WALLET"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -98,16 +97,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:width="334dp"
         android:height="57dp"
-        android:backgroundTint="#FF9090"
+        android:background="@drawable/red_button_bg"
         android:text="REMOVE"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -117,11 +117,11 @@
     <ImageButton
         android:id="@+id/add_wallet_btn"
         android:layout_width="53dp"
-        android:layout_height="127dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
         android:layout_marginTop="27dp"
         android:layout_marginEnd="20dp"
-        android:scaleType="centerCrop"
+        android:background="#0000"
         android:src="@drawable/add_card_dash_button"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
         app:layout_constraintStart_toStartOf="parent"

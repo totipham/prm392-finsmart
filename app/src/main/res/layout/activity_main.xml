@@ -11,10 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include android:id="@+id/top_nav"
-            app:layout_constraintTop_toTopOf="parent"
+        <include
+            android:id="@+id/top_nav"
+            layout="@layout/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            layout="@layout/toolbar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/frameLayout"
@@ -22,8 +23,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0">
-        </FrameLayout>
+            app:layout_constraintHorizontal_bias="0.0" />
     </LinearLayout>
 
 
@@ -31,9 +31,9 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemIconTint="@color/bottom_nav_icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/bottom_nav_icon_color" />
+        app:menu="@menu/bottom_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
