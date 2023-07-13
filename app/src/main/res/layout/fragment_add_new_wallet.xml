@@ -1,80 +1,75 @@
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.AddNewWalletFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/edt_amount"
-        android:layout_width="200dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="173dp"
-        android:layout_marginBottom="240dp"
-        android:background="@drawable/input_field_background"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_label" />
+        <EditText
+            android:id="@+id/edt_amount"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="240dp"
+            android:background="@drawable/input_field_background"
+            android:paddingStart="10dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amount_label" />
 
         <TextView
             android:id="@+id/name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="10dp"
             android:text="Wallet name"
             android:textColor="@color/black_text"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enter_label" />
 
-    <TextView
-        android:id="@+id/amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="152dp"
-        android:text="Amount"
-        android:textColor="@color/black_text"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_label" />
+        <TextView
+            android:id="@+id/amount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="10dp"
+            android:text="Amount"
+            android:textColor="@color/black_text"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_name" />
 
-    <TextView
-        android:id="@+id/enter_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="4dp"
-        android:text="Enter Information"
-        android:textColor="@color/black_text"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bigcard" />
+        <TextView
+            android:id="@+id/enter_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="4dp"
+            android:text="Enter Information"
+            android:textColor="@color/black_text"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bigcard" />
 
         <EditText
             android:id="@+id/edt_name"
             android:layout_width="346dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="336dp"
+            android:layout_marginStart="28dp"
             android:background="@drawable/input_field_background"
             android:ems="10"
             android:inputType="text|textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.425"
+            android:paddingStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name_label" />
 
@@ -90,14 +85,16 @@
             app:menu="@menu/bottom_nav_menu" />
 
         <Button
-        android:id="@+id/btn_confirm"
-        style="@style/button"
-        android:layout_marginTop="32dp"
-        android:text="Confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/isDefault_swt" />
+            android:id="@+id/btn_confirm"
+            style="@style/button"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isDefault_swt" />
 
         <ImageView
             android:id="@+id/bigcard"
@@ -111,54 +108,54 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-        android:id="@+id/yellowborder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="32dp"
-        android:src="@drawable/vector445"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bigcard" />
+            android:id="@+id/yellowborder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/vector445"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bigcard" />
 
-    <ImageView
-        android:id="@+id/bigdot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="36dp"
-        android:src="@drawable/ellipse275"
-        app:layout_constraintEnd_toEndOf="@+id/yellowborder"
-        app:layout_constraintTop_toTopOf="@+id/yellowborder" />
+        <ImageView
+            android:id="@+id/bigdot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="36dp"
+            android:src="@drawable/ellipse275"
+            app:layout_constraintEnd_toEndOf="@+id/yellowborder"
+            app:layout_constraintTop_toTopOf="@+id/yellowborder" />
 
-    <TextView
-        android:id="@+id/wallet_lbl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="116dp"
-        android:text="Wallet name"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bigcard" />
+        <TextView
+            android:id="@+id/wallet_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="116dp"
+            android:text="Wallet name"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bigcard" />
 
-    <TextView
-        android:id="@+id/txt_wallet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:text="Name here"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallet_lbl" />
+        <TextView
+            android:id="@+id/txt_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:text="Name here"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wallet_lbl" />
 
         <Switch
             android:id="@+id/isDefault_swt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:text="Mark as default card"
             app:layout_constraintStart_toStartOf="parent"

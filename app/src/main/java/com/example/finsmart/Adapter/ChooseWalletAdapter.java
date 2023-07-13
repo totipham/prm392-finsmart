@@ -39,7 +39,6 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
         Currency currency = Currency.getInstance("VND");
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setCurrency(currency);
-//        format.format(1000000);
         holder.tvWalletName.setText(wallets.get(position).getName() + " Wallet");
         holder.tvWalletBalance.setText(format.format(wallets.get(position).getBalance()));
     }

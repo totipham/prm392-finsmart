@@ -1,6 +1,5 @@
 package com.example.finsmart.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
@@ -26,8 +27,15 @@ import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -38,11 +46,14 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     ViewPager2 viewPager;
-
-    public TextView name;
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+
+    private float totalBalance = 0;
+    FirebaseFirestore db;
+    private ArrayList<Wallet> walletList;
+    ProgressBar progressBar;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -62,7 +73,6 @@ public class HomeFragment extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
 
-    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,21 +98,93 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_home, container, false);
+        progressBar = view.findViewById(R.id.pbar_wallet);
+        progressBar.setVisibility(View.VISIBLE);
+        walletList = new ArrayList<>();
+        loadWalletList();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        generateWalletList(view);
         generateTransactionList(view);
     }
+
+    private void loadWalletList() {
+        db.collection("wallets").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    walletList.clear();
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
+                        totalBalance += wallet.getBalance();
+                        walletList.add(wallet);
+                    }
+
+                    updateWalletRecyclerView();
+                } else {
+                    Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateWalletRecyclerView() {
+        Currency currency = Currency.getInstance("VND");
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(currency);
+        ((TextView) getView().findViewById(R.id.tv_balance_amount)).setText(format.format(totalBalance));
+
+        viewPager = (ViewPager2) getView().findViewById(R.id.view_pager);
+        sliderDotspanel = (LinearLayout) getView().findViewById(R.id.slider_dots);
+        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
+        viewPager.setAdapter(walletListAdapter);
+        dotscount = walletListAdapter.getItemCount();
+        dots = new ImageView[dotscount];
+
+        for (int i = 0; i < dotscount; i++) {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotscount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        progressBar.setVisibility(View.GONE);
+    }
+
 
     void generateTransactionList(View view) {
         List<Transaction> transactionList = new ArrayList<>();
