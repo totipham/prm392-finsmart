@@ -5,4 +5,6 @@
     <string name="transaction_history">Transaction history</string>
     <string name="choose_recipient">Choose Recipient</string>
     <string name="choose_wallet">Choose Wallet</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
