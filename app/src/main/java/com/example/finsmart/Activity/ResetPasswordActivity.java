@@ -12,5 +12,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+
+        findViewById(R.id.top_nav_back_button).setOnClickListener(v -> this.finish());
     }
 }

@@ -40,7 +40,10 @@
             android:name=".Activity.ForgetPasswordActivity"
             android:exported="false">
         </activity>
-
+        <activity
+            android:name=".Activity.ResetPasswordActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
