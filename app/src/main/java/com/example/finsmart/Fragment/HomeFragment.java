@@ -68,10 +68,12 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+    }
+    // Check if user is signed in (non-null) and update UI accordingly.
 
     /**
      * Use this factory method to create a new instance of
