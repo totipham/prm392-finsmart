@@ -70,10 +70,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(SignUpActivity.this, "Account created", Toast.LENGTH_SHORT).show();
-                                    Map<String, Object> fullName = new HashMap<>();
-                                    fullName.put("name", name.toString());
-                                    db.collection("users").add(fullName);
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                                    Map<String, Object> user = new HashMap<>();
+                                    user.put("name", name.toString());
+                                    db.collection("users").document(currentUser.getUid()).set(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("Signup", "createUserWithEmail:failure", task.getException());

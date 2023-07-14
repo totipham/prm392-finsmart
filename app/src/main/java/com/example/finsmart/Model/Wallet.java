@@ -5,10 +5,12 @@ public class Wallet {
     private String name;
     private double balance;
 
-    public Wallet(String walletId, String name, double balance) {
+    private String belongTo;
+    public Wallet(String walletId, String name, double balance, String belongTo) {
         this.walletId = walletId;
         this.name = name;
         this.balance = balance;
+        this.belongTo = belongTo;
     }
 
     public String getWalletId() {
@@ -33,5 +35,13 @@ public class Wallet {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getBelongTo() {
+        return belongTo;
+    }
+
+    public void setBelongTo(String belongTo) {
+        this.belongTo = belongTo;
     }
 }

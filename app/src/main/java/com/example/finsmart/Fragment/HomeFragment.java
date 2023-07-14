@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -55,6 +57,10 @@ public class HomeFragment extends Fragment {
     private ArrayList<Wallet> walletList;
     ProgressBar progressBar;
 
+    TextView wellcomename;
+
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -111,7 +117,23 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.pbar_wallet);
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
-        loadWalletList();
+        wellcomename = view.findViewById(R.id.tv_home_name);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        if(mUser != null){
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        wellcomename.setText(document.getString("name") + "!");
+                        loadWalletList();
+                    }
+                }
+            });
+        }
         return view;
     }
 
@@ -129,9 +151,12 @@ public class HomeFragment extends Fragment {
                     walletList.clear();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                        totalBalance += wallet.getBalance();
-                        walletList.add(wallet);
+                        //it is what it is
+                        if(document.getString("belongTo").equals(mUser.getUid())){
+                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                            totalBalance += wallet.getBalance();
+                            walletList.add(wallet);
+                        }
                     }
 
                     updateWalletRecyclerView();
@@ -211,13 +236,13 @@ public class HomeFragment extends Fragment {
     void generateWalletList(View view) {
         List<Wallet> walletList = new ArrayList<>();
 
-        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
-        Wallet w2 = new Wallet("w2", "Education", 1000000);
-        Wallet w3 = new Wallet("w3", "Investment", 1000000);
-
-        walletList.add(w1);
-        walletList.add(w2);
-        walletList.add(w3);
+//        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
+//        Wallet w2 = new Wallet("w2", "Education", 1000000);
+//        Wallet w3 = new Wallet("w3", "Investment", 1000000);
+//
+//        walletList.add(w1);
+//        walletList.add(w2);
+//        walletList.add(w3);
 
         viewPager = (ViewPager2) view.findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) view.findViewById(R.id.slider_dots);

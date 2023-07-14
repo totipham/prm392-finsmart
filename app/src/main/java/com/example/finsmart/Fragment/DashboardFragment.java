@@ -22,6 +22,8 @@ import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,6 +48,9 @@ public class DashboardFragment extends Fragment {
     private String mParam2;
 
     FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+
     private ArrayList<Wallet> walletList;
     ProgressBar progressBar;
 
@@ -79,6 +84,9 @@ public class DashboardFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
     }
 
     @Override
@@ -106,8 +114,10 @@ public class DashboardFragment extends Fragment {
                     walletList.clear();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                        walletList.add(wallet);
+                        if(document.getString("belongTo").equals(mUser.getUid())){
+                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                            walletList.add(wallet);
+                        }
                     }
 
                     updateWalletRecyclerView();

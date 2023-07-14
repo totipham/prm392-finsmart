@@ -1,5 +1,6 @@
 package com.example.finsmart.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
@@ -10,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
@@ -17,6 +19,13 @@ import com.example.finsmart.Model.Transaction;
 import com.example.finsmart.Model.Transaction.TransactionType;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         generateWalletList();
         generateTransactionList();
     }
@@ -60,13 +70,13 @@ public class HomeActivity extends AppCompatActivity {
     void generateWalletList() {
         List<Wallet> walletList = new ArrayList<>();
 
-        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
-        Wallet w2 = new Wallet("w2", "Education", 1000000);
-        Wallet w3 = new Wallet("w3", "Investment", 1000000);
-
-        walletList.add(w1);
-        walletList.add(w2);
-        walletList.add(w3);
+//        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
+//        Wallet w2 = new Wallet("w2", "Education", 1000000);
+//        Wallet w3 = new Wallet("w3", "Investment", 1000000);
+//
+//        walletList.add(w1);
+//        walletList.add(w2);
+//        walletList.add(w3);
 
         viewPager = (ViewPager2) findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) findViewById(R.id.slider_dots);
