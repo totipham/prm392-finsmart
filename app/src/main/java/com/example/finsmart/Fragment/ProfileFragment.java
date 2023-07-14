@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.finsmart.Activity.LoginActivity;
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Activity.SignUpActivity;
 import com.example.finsmart.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +35,7 @@ import org.w3c.dom.Text;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +45,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ProfilePreferenceFragment ProfilePreference;
     private View mView;
     private LinearLayout user_preference;
     private LinearLayout user_logout;
@@ -84,16 +84,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        ProfilePreference = new ProfilePreferenceFragment();
         db = FirebaseFirestore.getInstance();
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,8 +94,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mView = inflater.inflate(R.layout.fragment_profile, container, false);
         user_preference = (LinearLayout)mView.findViewById(R.id.user_preference);
         user_logout = (LinearLayout)mView.findViewById(R.id.user_logout);
-        user_preference.setOnClickListener(this);
-        user_logout.setOnClickListener(this);
+        user_preference.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(
+                        ((MainActivity) getActivity()).profilePreferenceFragment,
+                        "profilePreference","Preferences"
+                );
+            }
+        });
+        user_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //get email
         mAuth = FirebaseAuth.getInstance();
@@ -124,18 +132,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         // Inflate the layout for this fragment
         return mView;
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.user_preference) {
-            replaceFragment(ProfilePreference);
-        } else if (id == R.id.user_logout) {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
-
-        }
     }
 }
