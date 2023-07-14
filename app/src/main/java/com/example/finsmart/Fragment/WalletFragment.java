@@ -3,8 +3,6 @@ package com.example.finsmart.Fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,12 +69,13 @@ public class WalletFragment extends Fragment {
                              Bundle savedInstanceState) {
         View dogshit = inflater.inflate(R.layout.fragment_wallet, container, false);
         // Inflate the layout for this fragment
-        AddNewWalletFragment addNewWalletFragment = new AddNewWalletFragment();
         imageButton = (ImageButton) dogshit.findViewById(R.id.add_wallet_btn);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).replaceFragment(addNewWalletFragment);
+                ((MainActivity) getActivity()).replaceFragment(
+                        ((MainActivity)getActivity()).addNewWalletFragment
+                        ,"addWallet","Add New Wallet");
             }
         });
         return dogshit;
