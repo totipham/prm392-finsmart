@@ -1,11 +1,16 @@
 package com.example.finsmart.Activity;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     EditText emailText, paswordText;
     Button sign_in;
+
+    ImageView eyeIcon;
+    private boolean isPasswordVisible = false;
 
     @Override
     public void onStart() {
@@ -48,6 +56,22 @@ public class LoginActivity extends AppCompatActivity {
 
         emailText = findViewById(R.id.edt_email_signin);
         paswordText = findViewById(R.id.edt_password_signin);
+
+        eyeIcon = findViewById(R.id.image_eye);
+        eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPasswordVisible = !isPasswordVisible;
+                if (isPasswordVisible) {
+                    paswordText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.eye_icon_vector);
+                } else {
+                    paswordText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.eye_icon_vector_focus);
+                }
+                paswordText.setSelection(paswordText.getText().length());
+            }
+        });
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,4 +117,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+
 }
