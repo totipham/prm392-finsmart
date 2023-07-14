@@ -19,11 +19,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
 import com.example.finsmart.Model.Transaction;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +69,21 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+    // Check if user is signed in (non-null) and update UI accordingly.
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment HomeFragment.
+     */
+    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -200,6 +218,47 @@ public class HomeFragment extends Fragment {
         walletList.add(w1);
         walletList.add(w2);
         walletList.add(w3);
+
+        viewPager = (ViewPager2) view.findViewById(R.id.view_pager);
+        sliderDotspanel = (LinearLayout) view.findViewById(R.id.slider_dots);
+
+        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
+
+        viewPager.setAdapter(walletListAdapter);
+
+        dotscount = walletListAdapter.getItemCount();
+        dots = new ImageView[dotscount];
+
+        for (int i = 0; i < dotscount; i++) {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+
+//        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotscount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
