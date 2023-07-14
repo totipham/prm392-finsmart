@@ -95,7 +95,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        generateRecipientList(view);
+//        generateRecipientList(view);
     }
 
     private void loadWalletList() {
@@ -145,11 +145,11 @@ public class DashboardFragment extends Fragment {
         recipientList.add(u5);
 
         ChooseRecipientAdapter recipientListAdapter = new ChooseRecipientAdapter(recipientList);
-        RecyclerView recipientListScroll = (RecyclerView) view.findViewById(R.id.rview_recipient_scroll);
+//        RecyclerView recipientListScroll = (RecyclerView) view.findViewById(R.id.rview_recipient_scroll);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        recipientListScroll.setLayoutManager(layoutManager);
-        recipientListScroll.setAdapter(recipientListAdapter);
+//        recipientListScroll.setLayoutManager(layoutManager);
+//        recipientListScroll.setAdapter(recipientListAdapter);
 
     }
 
