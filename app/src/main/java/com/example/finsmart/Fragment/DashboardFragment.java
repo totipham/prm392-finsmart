@@ -22,6 +22,8 @@ import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,6 +48,9 @@ public class DashboardFragment extends Fragment {
     private String mParam2;
 
     FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+
     private ArrayList<Wallet> walletList;
     ProgressBar progressBar;
 
@@ -79,13 +84,16 @@ public class DashboardFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transfer_target, container, false);
-        progressBar = view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.pbar_wallet_2);
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
         loadWalletList();
@@ -95,7 +103,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        generateRecipientList(view);
+//        generateRecipientList(view);
     }
 
     private void loadWalletList() {
@@ -106,8 +114,10 @@ public class DashboardFragment extends Fragment {
                     walletList.clear();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                        walletList.add(wallet);
+                        if(document.getString("belongTo").equals(mUser.getUid())){
+                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                            walletList.add(wallet);
+                        }
                     }
 
                     updateWalletRecyclerView();
@@ -145,11 +155,11 @@ public class DashboardFragment extends Fragment {
         recipientList.add(u5);
 
         ChooseRecipientAdapter recipientListAdapter = new ChooseRecipientAdapter(recipientList);
-        RecyclerView recipientListScroll = (RecyclerView) view.findViewById(R.id.rview_recipient_scroll);
+//        RecyclerView recipientListScroll = (RecyclerView) view.findViewById(R.id.rview_recipient_scroll);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        recipientListScroll.setLayoutManager(layoutManager);
-        recipientListScroll.setAdapter(recipientListAdapter);
+//        recipientListScroll.setLayoutManager(layoutManager);
+//        recipientListScroll.setAdapter(recipientListAdapter);
 
     }
 

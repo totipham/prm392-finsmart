@@ -15,6 +15,8 @@ import com.example.finsmart.Fragment.ProfilePreferenceFragment;
 import com.example.finsmart.Fragment.WalletFragment;
 import com.example.finsmart.R;
 import com.example.finsmart.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public AddNewWalletFragment addNewWalletFragment;
     View topNav;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(homeFragment,"home","");
         topNav = findViewById(R.id.top_nav);
         topNav.setVisibility(View.GONE);
-
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {

@@ -19,13 +19,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
 import com.example.finsmart.Model.Transaction;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +57,10 @@ public class HomeFragment extends Fragment {
     private ArrayList<Wallet> walletList;
     ProgressBar progressBar;
 
+    TextView wellcomename;
+
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +75,21 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+    // Check if user is signed in (non-null) and update UI accordingly.
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment HomeFragment.
+     */
+    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -93,7 +117,23 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.pbar_wallet);
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
-        loadWalletList();
+        wellcomename = view.findViewById(R.id.tv_home_name);
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        if(mUser != null){
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        wellcomename.setText(document.getString("name") + "!");
+                        loadWalletList();
+                    }
+                }
+            });
+        }
         return view;
     }
 
@@ -111,9 +151,12 @@ public class HomeFragment extends Fragment {
                     walletList.clear();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                        totalBalance += wallet.getBalance();
-                        walletList.add(wallet);
+                        //it is what it is
+                        if(document.getString("belongTo").equals(mUser.getUid())){
+                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                            totalBalance += wallet.getBalance();
+                            walletList.add(wallet);
+                        }
                     }
 
                     updateWalletRecyclerView();
@@ -193,13 +236,54 @@ public class HomeFragment extends Fragment {
     void generateWalletList(View view) {
         List<Wallet> walletList = new ArrayList<>();
 
-        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
-        Wallet w2 = new Wallet("w2", "Education", 1000000);
-        Wallet w3 = new Wallet("w3", "Investment", 1000000);
+//        Wallet w1 = new Wallet("w1", "Shopping", 1000000);
+//        Wallet w2 = new Wallet("w2", "Education", 1000000);
+//        Wallet w3 = new Wallet("w3", "Investment", 1000000);
+//
+//        walletList.add(w1);
+//        walletList.add(w2);
+//        walletList.add(w3);
 
-        walletList.add(w1);
-        walletList.add(w2);
-        walletList.add(w3);
+        viewPager = (ViewPager2) view.findViewById(R.id.view_pager);
+        sliderDotspanel = (LinearLayout) view.findViewById(R.id.slider_dots);
+
+        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
+
+        viewPager.setAdapter(walletListAdapter);
+
+        dotscount = walletListAdapter.getItemCount();
+        dots = new ImageView[dotscount];
+
+        for (int i = 0; i < dotscount; i++) {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+
+//        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dotscount; i++) {
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.noactive_dot));
+                }
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
