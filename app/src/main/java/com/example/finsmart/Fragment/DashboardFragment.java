@@ -85,7 +85,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transfer_target, container, false);
-        progressBar = view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.pbar_wallet_2);
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
         loadWalletList();
