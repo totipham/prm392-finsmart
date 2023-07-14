@@ -51,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailText.getText().toString();
-                String pass = paswordText.getText().toString();
+                String email = emailText.getText().toString().trim();
+                String pass = paswordText.getText().toString().trim();
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(LoginActivity.this, "Please enter Email", Toast.LENGTH_SHORT).show();
                     return;
@@ -73,8 +73,9 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    String errorMessage= task.getException().getMessage();
+                                    //Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, errorMessage,Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
