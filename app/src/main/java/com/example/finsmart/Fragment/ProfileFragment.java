@@ -3,6 +3,7 @@ package com.example.finsmart.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,8 +17,15 @@ import android.widget.TextView;
 import com.example.finsmart.Activity.LoginActivity;
 import com.example.finsmart.Activity.SignUpActivity;
 import com.example.finsmart.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import org.w3c.dom.Text;
 
@@ -44,6 +52,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private TextView email, name;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+
+    FirebaseFirestore db;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -75,6 +85,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         ProfilePreference = new ProfilePreferenceFragment();
+        db = FirebaseFirestore.getInstance();
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -98,7 +109,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mUser = mAuth.getCurrentUser();
         if(mUser != null){
             email = mView.findViewById(R.id.tv_email);
+            name = mView.findViewById(R.id.tv_profile_name);
             email.setText(mUser.getEmail());
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        name.setText(document.getString("name"));
+                    }
+                }
+            });
         }
         // Inflate the layout for this fragment
         return mView;
