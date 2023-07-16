@@ -8,7 +8,7 @@
     tools:context=".Activity.LoginActivity">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tv_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_signin" />
 
     <EditText
         android:id="@+id/edt_password_signin"
@@ -58,7 +58,8 @@
         android:textColorHint="#CBCBCB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_email_signin"/>
+        app:layout_constraintTop_toBottomOf="@+id/edt_email_signin" />
+
     <ImageView
         android:id="@+id/image_eye"
         android:layout_width="wrap_content"
@@ -82,7 +83,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_apple"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_signin"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -99,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_google"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_signin"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
@@ -116,7 +117,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_signin" />
 
     <TextView
         android:id="@+id/txt_forget"
