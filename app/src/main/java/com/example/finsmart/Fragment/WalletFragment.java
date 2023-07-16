@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,6 +84,26 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((Button) view.findViewById(R.id.btn_remove_wallet)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedWallet != null) {
+                    Toast.makeText(getContext(), "Delete wallet " + selectedWallet.getName(), Toast.LENGTH_SHORT).show();
+                    db.collection("wallets").document(selectedWallet.getWalletId())
+                            .delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    loadWalletList();
+                                    Toast.makeText(getContext(), "Delete wallet successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(getContext(), "Please select a wallet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void loadWalletList() {
@@ -98,6 +119,11 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.getString("belongTo").equals(mUser.getUid())) {
                                     Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+
+                                    if (isFirst) {
+                                        selectedWallet = wallet;
+                                    }
+
                                     walletList.add(new WalletWithCheck(wallet, isFirst));
                                     isFirst = false;
                                 }
