@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,24 +90,16 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_profile, container, false);
-        user_preference = (LinearLayout)mView.findViewById(R.id.user_preference);
-        user_logout = (LinearLayout)mView.findViewById(R.id.user_logout);
-        user_preference.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(
-                        ((MainActivity) getActivity()).profilePreferenceFragment,
-                        "profilePreference","Preferences"
-                );
-            }
-        });
-        user_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+        user_preference = mView.findViewById(R.id.user_preference);
+        user_logout = mView.findViewById(R.id.user_logout);
+        user_preference.setOnClickListener(v -> ((MainActivity)getActivity()).replaceFragment(
+                ((MainActivity) getActivity()).profilePreferenceFragment,
+                "profilePreference","Preferences"
+        ));
+        user_logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
         });
 
         //get email

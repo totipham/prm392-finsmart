@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     DashboardFragment dashboardFragment;
     public ProfilePreferenceFragment profilePreferenceFragment;
     public AddNewWalletFragment addNewWalletFragment;
+    public UpdateProfileFragment updateProfileFragment;
     View topNav;
 
     @Override
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(profileFragment, "profile", "Profile");
                         break;
                     case "editInformation":
-//                            replaceFragment(,"editInfo","Edit Information");
+                        replaceFragment(profilePreferenceFragment,"profilePreference","Preferences");
                         break;
                     case "addWallet":
                         replaceFragment(walletFragment, "wallet", "Wallets");
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
         profilePreferenceFragment = new ProfilePreferenceFragment();
         addNewWalletFragment = new AddNewWalletFragment();
+        updateProfileFragment = new UpdateProfileFragment();
 
         fragmentManager.beginTransaction().add(R.id.frameLayout, homeFragment, "home").commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout, walletFragment, "wallet").commit();
@@ -123,5 +125,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().hide(profilePreferenceFragment).commitNow();
         fragmentManager.beginTransaction().add(R.id.frameLayout, addNewWalletFragment, "addWallet").commit();
         fragmentManager.beginTransaction().hide(addNewWalletFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, updateProfileFragment, "editInformation").commit();
+        fragmentManager.beginTransaction().hide(updateProfileFragment).commitNow();
     }
 }
