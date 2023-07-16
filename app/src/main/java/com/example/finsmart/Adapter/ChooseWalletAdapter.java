@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finsmart.Model.Wallet;
+import com.example.finsmart.Fragment.DashboardFragment;
+import com.example.finsmart.Fragment.WalletWithCheck;
+import com.example.finsmart.Interface.RecyclerViewClickListener;
 import com.example.finsmart.R;
 
 import java.text.NumberFormat;
@@ -18,10 +21,12 @@ import java.util.Currency;
 import java.util.List;
 
 public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapter.WalletListHolder> {
-    private List<Wallet> wallets;
+    private List<WalletWithCheck> wallets;
+    private RecyclerViewClickListener listener;
 
-    public ChooseWalletAdapter(List<Wallet> wallets) {
-        this.wallets = wallets;
+    public ChooseWalletAdapter(List<WalletWithCheck> walletList, DashboardFragment listener) {
+        this.wallets = walletList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,6 +46,12 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
         format.setCurrency(currency);
         holder.tvWalletName.setText(wallets.get(position).getName() + " Wallet");
         holder.tvWalletBalance.setText(format.format(wallets.get(position).getBalance()));
+
+        if (wallets.get(position).isChecked) {
+            holder.imvCheck.setVisibility(View.VISIBLE);
+        } else {
+            holder.imvCheck.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -51,17 +62,21 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
     public class WalletListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvWalletName;
         TextView tvWalletBalance;
+        ImageView imvCheck;
+
+        public boolean isWalletChecked;
 
         public WalletListHolder(@NonNull View itemView) {
             super(itemView);
             tvWalletName = itemView.findViewById(R.id.tv_wallet_name);
             tvWalletBalance = itemView.findViewById(R.id.tv_wallet_balance);
+            imvCheck = itemView.findViewById(R.id.img_wallet_checked);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Wallet: " + wallets.get(getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
+            listener.recyclerViewListClicked(v, getAdapterPosition());
         }
     }
 }
