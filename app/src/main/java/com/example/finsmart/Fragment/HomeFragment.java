@@ -63,12 +63,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public HomeFragment(FirebaseFirestore db, FirebaseAuth mAuth, FirebaseUser mUser) {
-        this.db = db;
-        this.mAuth = mAuth;
-        this.mUser = mUser;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -86,13 +80,17 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
         View view = inflater.inflate(R.layout.activity_home, container, false);
         progressBar = view.findViewById(R.id.pbar_wallet);
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
         wellcomename = view.findViewById(R.id.tv_home_name);
 
-        if(mUser != null){
+        if (mUser != null) {
             DocumentReference docRef = db.collection("users").document(mUser.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -123,7 +121,7 @@ public class HomeFragment extends Fragment {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         //it is what it is
-                        if(document.getString("belongTo").equals(mUser.getUid())){
+                        if (document.getString("belongTo").equals(mUser.getUid())) {
                             Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
                             totalBalance += wallet.getBalance();
                             walletList.add(wallet);

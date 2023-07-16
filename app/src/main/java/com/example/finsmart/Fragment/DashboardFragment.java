@@ -50,12 +50,6 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public DashboardFragment(FirebaseFirestore db, FirebaseAuth mAuth, FirebaseUser mUser) {
-        this.db = db;
-        this.mAuth = mAuth;
-        this.mUser = mUser;
-    }
-
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
     }
@@ -68,16 +62,21 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
         View view = inflater.inflate(R.layout.fragment_transfer_target, container, false);
+
         progressBar = view.findViewById(R.id.pbar_wallet_2);
         btnNext = view.findViewById(R.id.btn_continue);
         edtRecipientEmail = view.findViewById(R.id.edt_recipient_email);
         txtRecipientName = view.findViewById(R.id.txt_recipient_name);
         txtRecipientEmail = view.findViewById(R.id.txt_recipient_email);
         imvRecipientAvatar = view.findViewById(R.id.img_recipient_avatar);
+
         progressBar.setVisibility(View.VISIBLE);
         walletList = new ArrayList<>();
-        loadWalletList();
         return view;
     }
 
@@ -85,6 +84,7 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadWalletList();
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,25 +148,27 @@ public class DashboardFragment extends Fragment {
     }
 
     private void loadWalletList() {
-        db.collection("wallets").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    walletList.clear();
+        db.collection("wallets")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            walletList.clear();
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if(document.getString("belongTo").equals(mUser.getUid())){
-                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
-                            walletList.add(wallet);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getString("belongTo").equals(mUser.getUid())) {
+                                    Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                                    walletList.add(wallet);
+                                }
+                            }
+
+                            updateWalletRecyclerView();
+                        } else {
+                            Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-                    updateWalletRecyclerView();
-                } else {
-                    Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                });
     }
 
     private void updateWalletRecyclerView() {

@@ -49,6 +49,7 @@ public class UpdateProfileFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     Map<String, Object> user;
+    Map config;
 
     public UpdateProfileFragment() {
     }
@@ -66,6 +67,7 @@ public class UpdateProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        configCloudinary();
     }
 
     @Override
@@ -115,6 +117,15 @@ public class UpdateProfileFragment extends Fragment {
                 });
             }
         });
+    }
+
+    void configCloudinary() {
+        config = new HashMap<>();
+        config.put("cloud_name", "ddr0pf043");
+        config.put("api_key", "814571977924379");
+        config.put("api_secret", "p7WjgkOnh46EF1p9iN-Aa-6X0vY");
+        config.put("secure", true);
+        MediaManager.init(getContext(), config);
     }
 
     void bindData() {
