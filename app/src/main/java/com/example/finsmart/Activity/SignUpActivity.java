@@ -55,9 +55,9 @@ public class SignUpActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(full_name.getText());
-                String e = String.valueOf(email.getText());
-                String pass = String.valueOf(pasword.getText());
+                String name = String.valueOf(full_name.getText()).trim();
+                String e = String.valueOf(email.getText()).trim();
+                String pass = String.valueOf(pasword.getText()).trim();
                 if(TextUtils.isEmpty(name) || TextUtils.isEmpty(e)  || TextUtils.isEmpty(pass) ){
                     Toast.makeText(SignUpActivity.this, "Please enter everything", Toast.LENGTH_SHORT).show();
                     return;
@@ -74,17 +74,17 @@ public class SignUpActivity extends AppCompatActivity {
                                     Map<String, Object> user = new HashMap<>();
                                     user.put("name", name.toString());
                                     db.collection("users").document(currentUser.getUid()).set(user);
+                                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("Signup", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    String errorMessage= task.getException().getMessage();
+                                    //Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
             }
         });
     }
