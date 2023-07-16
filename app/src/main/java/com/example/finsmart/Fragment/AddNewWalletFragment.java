@@ -1,5 +1,6 @@
 package com.example.finsmart.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -36,6 +40,8 @@ public class AddNewWalletFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
     public AddNewWalletFragment() {
         // Required empty public constructor
@@ -67,6 +73,8 @@ public class AddNewWalletFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
     }
 
@@ -105,7 +113,10 @@ public class AddNewWalletFragment extends Fragment {
                 Map<String, Object> card = new HashMap<>();
                 card.put("name", name.getText().toString());
                 card.put("balance", Float.parseFloat(amount.getText().toString()));
+                card.put("belongTo",mUser.getUid());
                 db.collection("wallets").add(card);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
         // Inflate the layout for this fragment

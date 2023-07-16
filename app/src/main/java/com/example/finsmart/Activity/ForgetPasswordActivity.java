@@ -2,7 +2,6 @@ package com.example.finsmart.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,15 +16,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
-        verify = (Button) findViewById(R.id.btn_verify);
-        verify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ForgetPasswordActivity.this, ResetPasswordActivity.class);
-                startActivity(intent);
-
-
-            }
+        verify = findViewById(R.id.btn_verify);
+        verify.setOnClickListener(v -> {
+            Intent intent = new Intent(ForgetPasswordActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
         });
+
+        findViewById(R.id.top_nav_back_button).setOnClickListener(v -> this.finish());
     }
 }

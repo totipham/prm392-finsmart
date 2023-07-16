@@ -155,8 +155,10 @@ public class DashboardFragment extends Fragment {
                     walletList.clear();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"));
-                        walletList.add(wallet);
+                        if(document.getString("belongTo").equals(mUser.getUid())){
+                            Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+                            walletList.add(wallet);
+                        }
                     }
 
                     updateWalletRecyclerView();
