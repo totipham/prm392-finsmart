@@ -15,12 +15,12 @@
         android:textColor="@color/pure_black"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView15"
+        app:layout_constraintBottom_toTopOf="@+id/tv_recipient_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/tv_recipient_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="88dp"

@@ -2,32 +2,19 @@ package com.example.finsmart.Model;
 
 public class User {
     private String id;
-    private String username;
+    private String name;
     private String password;
-    private String firstName;
-    private String lastName;
-    private String amount;
     private String email;
     private String avatar;
 
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, String avatar) {
+    public User(String id, String name, String email, String avatar) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.avatar = avatar;
-    }
-
-    public User(String id, String username, String password, String firstName, String lastName, String amount, String email) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.amount = amount;
+        this.name = name;
         this.email = email;
+        this.avatar = avatar;
     }
 
     public String getId() {
@@ -38,12 +25,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -52,30 +39,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
     }
 
     public String getEmail() {
