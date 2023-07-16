@@ -40,9 +40,6 @@
         <activity
             android:name=".Activity.ForgetPasswordActivity"
             android:exported="false" />
-        <activity
-            android:name=".Activity.EditProfileActivity"
-            android:exported="false" />
 
     </application>
 
