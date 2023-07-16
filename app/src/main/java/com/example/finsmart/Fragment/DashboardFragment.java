@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finsmart.Adapter.ChooseWalletAdapter;
+import com.example.finsmart.Interface.RecyclerViewClickListener;
 import com.example.finsmart.Model.User;
 import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
@@ -32,19 +33,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class DashboardFragment extends Fragment {
+
+public class DashboardFragment extends Fragment implements RecyclerViewClickListener {
+
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    private ArrayList<Wallet> walletList;
-    ProgressBar progressBar;
+    private List<WalletWithCheck> walletList;
+    ProgressBar progressBar, progressBarRecipient;
     Button btnNext;
     EditText edtRecipientEmail;
     TextView txtRecipientName, txtRecipientEmail;
     ImageView imvRecipientAvatar;
     User recipient;
     boolean isRecipientSelected = false;
+    Wallet selectedWallet;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -69,6 +74,7 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_transfer_target, container, false);
 
         progressBar = view.findViewById(R.id.pbar_wallet_2);
+        progressBarRecipient = view.findViewById(R.id.progress_bar_recipient);
         btnNext = view.findViewById(R.id.btn_continue);
         edtRecipientEmail = view.findViewById(R.id.edt_recipient_email);
         txtRecipientName = view.findViewById(R.id.txt_recipient_name);
@@ -93,6 +99,9 @@ public class DashboardFragment extends Fragment {
                     Toast.makeText(getContext(), "Move to confirm transfer fragment", Toast.LENGTH_SHORT).show();
 //                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
                 } else {
+                    progressBarRecipient.setVisibility(View.VISIBLE);
+                    edtRecipientEmail.setText(edtRecipientEmail.getText().toString().trim());
+
                     //get user from firebase firestore by email
                     db.collection("users").
                             whereEqualTo("email", edtRecipientEmail.getText().toString())
@@ -140,6 +149,7 @@ public class DashboardFragment extends Fragment {
         txtRecipientName.setVisibility(View.VISIBLE);
         txtRecipientEmail.setVisibility(View.VISIBLE);
         imvRecipientAvatar.setVisibility(View.VISIBLE);
+        progressBarRecipient.setVisibility(View.GONE);
 
         //binding data
         txtRecipientName.setText(recipient.getName());
@@ -155,15 +165,17 @@ public class DashboardFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             walletList.clear();
+                            boolean isFirst = true;
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.getString("belongTo").equals(mUser.getUid())) {
                                     Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
-                                    walletList.add(wallet);
+                                    walletList.add(new WalletWithCheck(wallet, isFirst));
+                                    isFirst = false;
                                 }
                             }
 
-                            updateWalletRecyclerView();
+                            updateWalletRecyclerView(0);
                         } else {
                             Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
                         }
@@ -171,14 +183,25 @@ public class DashboardFragment extends Fragment {
                 });
     }
 
-    private void updateWalletRecyclerView() {
+    private void updateWalletRecyclerView(int position) {
         RecyclerView walletScrollList = (RecyclerView) getView().findViewById(R.id.rview_wallet_scroll);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.scrollToPosition(position);
 
-        ChooseWalletAdapter walletListAdapter = new ChooseWalletAdapter(walletList);
+        ChooseWalletAdapter walletListAdapter = new ChooseWalletAdapter(walletList, this);
         walletScrollList.setAdapter(walletListAdapter);
         walletScrollList.setLayoutManager(layoutManager);
 
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        selectedWallet = walletList.get(position).getWallet();
+        for (int i = 0; i < walletList.size(); i++) {
+            walletList.get(i).setChecked(false);
+        }
+        walletList.get(position).setChecked(true);
+        updateWalletRecyclerView(position);
     }
 }
