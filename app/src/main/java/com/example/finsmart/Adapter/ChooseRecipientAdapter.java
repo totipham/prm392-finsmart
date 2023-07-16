@@ -1,6 +1,5 @@
 package com.example.finsmart.Adapter;
 
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,6 @@ public class ChooseRecipientAdapter extends RecyclerView.Adapter<ChooseRecipient
 
     public ChooseRecipientAdapter(List<User> recipientList) {
         this.recipientList = recipientList;
-
-        Log.d("abc", recipientList.get(0).getLastName());
     }
 
     @NonNull
@@ -37,8 +34,8 @@ public class ChooseRecipientAdapter extends RecyclerView.Adapter<ChooseRecipient
     public void onBindViewHolder(@NonNull ChooseRecipientHolder holder, int position) {
 //        holder.imgAvatar.setImageURI(Uri.parse(recipientList.get(position).getAvatar()));
         Picasso.get().load(recipientList.get(position).getAvatar()).into(holder.imgAvatar);
-        holder.tvFirstName.setText(recipientList.get(position).getFirstName());
-        holder.tvLastName.setText(recipientList.get(position).getLastName());
+//        holder.tvFirstName.setText(recipientList.get(position).getFirstName());
+//        holder.tvLastName.setText(recipientList.get(position).getLastName());
 
     }
 
@@ -54,7 +51,7 @@ public class ChooseRecipientAdapter extends RecyclerView.Adapter<ChooseRecipient
 
         public ChooseRecipientHolder(@NonNull View itemView) {
             super(itemView);
-            imgAvatar = itemView.findViewById(R.id.img_avatar);
+            imgAvatar = itemView.findViewById(R.id.img_recipient_avatar);
             tvFirstName = itemView.findViewById(R.id.tv_firstname);
             tvLastName = itemView.findViewById(R.id.tv_lastname);
         }
