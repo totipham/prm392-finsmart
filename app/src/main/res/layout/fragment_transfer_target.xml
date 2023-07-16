@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="90dp"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="71dp">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -55,35 +52,37 @@
         <Button
             android:id="@+id/btn_continue"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="36dp"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="50dp"
             android:background="@drawable/button_default"
             android:backgroundTint="@color/primary_dark"
             android:text="Continue"
             android:textColor="@color/black_text"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.388"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_recipient_email" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/txt_recipient_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="7dp"
-            android:text="maria@gmail.com"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="8dp"
+            android:text=""
             android:textColor="#004852"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/img_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            android:textStyle="normal"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_recipient_name" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/edt_recipient_email"
             android:layout_width="344dp"
             android:layout_height="56dp"
             android:layout_marginStart="28dp"
@@ -92,34 +91,37 @@
             android:background="@drawable/input_field_background"
             android:ems="10"
             android:inputType="text"
+            android:paddingStart="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_choose_recipient" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/txt_recipient_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="108dp"
             android:layout_marginTop="32dp"
-            android:text="Maria Sevchenko"
+            android:text=""
             android:textColor="@color/black_text"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/img_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_recipient_email" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_avatar"
+            android:id="@+id/img_recipient_avatar"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginStart="28dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/ic_launcher_background"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_recipient_email" />
 
         <TextView
             android:id="@+id/tv_choose_wallet"
@@ -140,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="-10dp"
-            android:text="Enter Recipient"
+            android:text="Enter Recipient Email"
             android:textColor="@color/black_text"
             android:textFontWeight="600"
             android:textSize="20sp"

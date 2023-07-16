@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment(db);
         walletFragment = new WalletFragment();
-        dashboardFragment = new DashboardFragment(db);
+        dashboardFragment = new DashboardFragment(db, mAuth, mUser);
         profileFragment = new ProfileFragment();
 //        updateProfileFragment = new UpdateProfileFragment(db, mAuth, mUser);
 
