@@ -63,7 +63,7 @@ public class TransferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_tranfer, container, false);
-        getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView)mView.findViewById(R.id.textView13)).setText(bundle.getString("amount")));
+        getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView)mView.findViewById(R.id.textView13)).setText("$"+bundle.getString("amount")));
 
         // Inflate the layout for this fragment
         return mView;
