@@ -55,26 +55,9 @@ public class HomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_home);
 
-        //generateWalletList();
-        //generateTransactionList();
         GetTransactionData();
     }
 
-    void generateTransactionList() {
-//        Transaction t1 = new Transaction("t1", "AI-Bank", TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
-//        Transaction t2 = new Transaction("t2", "McDonald", TransactionType.PAYMENT, true, "34.10", R.drawable.ticket_icon);
-//        Transaction t3 = new Transaction("t3", "Gym", TransactionType.DEPOSIT, false, "40.99", R.drawable.ticket_icon);
-//        Transaction t4 = new Transaction("t4", "AI-Bank", TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
-//
-//        transactionList.add(t1);
-//        transactionList.add(t2);
-//        transactionList.add(t3);
-//        transactionList.add(t4);
-
-
-    }
-
-    //nhờ ae copy paste vào các trang còn lại
     void GetTransactionData(){
         transactionList = new ArrayList<>();
         db.collection("transactions")
@@ -110,49 +93,5 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         }
                     });
-    }
-    void generateWalletList() {
-        List<Wallet> walletList = new ArrayList<>();
-
-        viewPager = (ViewPager2) findViewById(R.id.view_pager);
-        sliderDotspanel = (LinearLayout) findViewById(R.id.slider_dots);
-
-        WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
-
-        viewPager.setAdapter(walletListAdapter);
-
-        dotscount = walletListAdapter.getItemCount();
-        dots = new ImageView[dotscount];
-
-        for (int i = 0; i < dotscount; i++) {
-            dots[i] = new ImageView(this);
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.noactive_dot));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(8, 0, 8, 0);
-            sliderDotspanel.addView(dots[i], params);
-        }
-
-        dots[0].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                for (int i = 0; i < dotscount; i++) {
-                    dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.noactive_dot));
-                }
-
-                dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 }
