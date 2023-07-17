@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.HomeActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
 import com.example.finsmart.Model.Transaction;
@@ -186,21 +187,37 @@ public class HomeFragment extends Fragment {
     void generateTransactionList(View view) {
         List<Transaction> transactionList = new ArrayList<>();
 
-        Transaction t1 = new Transaction("t1", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
-        Transaction t2 = new Transaction("t2", "McDonald", Transaction.TransactionType.PAYMENT, true, "34.10", R.drawable.ticket_icon);
-        Transaction t3 = new Transaction("t3", "Gym", Transaction.TransactionType.DEPOSIT, false, "40.99", R.drawable.ticket_icon);
-        Transaction t4 = new Transaction("t4", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
+        db.collection("transactions")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            transactionList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getString("BelongTo").equals(mUser.getUid())) {
+                                    Transaction transaction = new Transaction(
+                                            document.getString("BelongTo"),
+                                            document.getDate("Date"),
+                                            document.getString("Name"),
+                                            Transaction.TransactionType.DEPOSIT,
+                                            document.getBoolean("IsIncome"),
+                                            document.getString("Amount"),
+                                            R.drawable.ticket_icon
+                                    );
+                                    transactionList.add(transaction);
+                                }
+                            }
 
-        transactionList.add(t1);
-        transactionList.add(t2);
-        transactionList.add(t3);
-        transactionList.add(t4);
-
-        TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
-        RecyclerView transactionHistoryView = (RecyclerView) view.findViewById(R.id.rview_transaction_history);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        transactionHistoryView.setLayoutManager(layoutManager);
-        transactionHistoryView.setAdapter(transactionListAdapter);
+                            TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
+                            RecyclerView transactionHistoryView = (RecyclerView) view.findViewById(R.id.rview_transaction_history);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            transactionHistoryView.setLayoutManager(layoutManager);
+                            transactionHistoryView.setAdapter(transactionListAdapter);
+                        } else {
+                            Toast.makeText(getContext(), "Error loading transaction", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
-
 }

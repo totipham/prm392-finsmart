@@ -1,12 +1,15 @@
 package com.example.finsmart.Model;
 
 
+import java.util.Date;
+
 public class Transaction {
     public enum TransactionType {
         PAYMENT, DEPOSIT
     }
 
-    private String id;
+    private String belongTo;
+    private Date date;
     private String name;
     private TransactionType type;
 
@@ -14,9 +17,9 @@ public class Transaction {
     private String amount;
     private int icon;
 
-    public Transaction(String id, String name, TransactionType type, boolean isIncome, String amount, int icon) {
-        ;
-        this.id = id;
+    public Transaction(String belongTo, Date date, String name, TransactionType type, boolean isIncome, String amount, int icon) {
+        this.belongTo = belongTo;
+        this.date = date;
         this.name = name;
         this.type = type;
         this.isIncome = isIncome;
@@ -24,28 +27,20 @@ public class Transaction {
         this.icon = icon;
     }
 
-    public String getId() {
-        return id;
+    public String getBelongTo() {
+        return belongTo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setBelongTo(String belongTo) {
+        this.belongTo = belongTo;
     }
 
-    public boolean isIncome() {
-        return isIncome;
+    public Date getDate() {
+        return date;
     }
 
-    public void setIncome(boolean income) {
-        isIncome = income;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getName() {
@@ -62,6 +57,22 @@ public class Transaction {
 
     public void setType(TransactionType type) {
         this.type = type;
+    }
+
+    public boolean isIncome() {
+        return isIncome;
+    }
+
+    public void setIncome(boolean income) {
+        isIncome = income;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public int getIcon() {
