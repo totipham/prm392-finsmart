@@ -69,7 +69,7 @@ public class TransferFragment extends Fragment {
         //set text receiver email
         getParentFragmentManager().setFragmentResultListener("recipientMailKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.txt_recipient_email)).setText(bundle.getString("recipientMail")));
         //set text amount
-        getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.textView13)).setText(format.format(bundle.getString("amount"))));
+        getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.textView13)).setText(format.format(Double.parseDouble(bundle.getString("amount")))));
 
         // Inflate the layout for this fragment
         return mView;
