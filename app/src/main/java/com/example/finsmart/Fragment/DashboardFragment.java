@@ -96,10 +96,17 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
             @Override
             public void onClick(View v) {
                 if (isRecipientSelected) {
+                    //pass recipient name
+                    Bundle recipientName = new Bundle();
+                    recipientName.putString("recipientName", (txtRecipientName.getText().toString()));
+                    getParentFragmentManager().setFragmentResult("recipientNameKey", recipientName);
+                    //
+                    Bundle recipientMail = new Bundle();
+                    recipientMail.putString("recipientMail", (txtRecipientEmail.getText().toString()));
+                    getParentFragmentManager().setFragmentResult("recipientMailKey", recipientMail);
                     //Move to confirm transfer fragment
                     Toast.makeText(getContext(), "Move to confirm transfer fragment", Toast.LENGTH_SHORT).show();
                     ((MainActivity)getActivity()).replaceFragment(((MainActivity)getActivity()).amountTransferFragment,"amountTransfer","Transfer");
-//                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
                 } else {
                     progressBarRecipient.setVisibility(View.VISIBLE);
                     edtRecipientEmail.setText(edtRecipientEmail.getText().toString().trim());

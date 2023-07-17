@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.finsmart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +31,9 @@ public class TransferFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
     View mView;
 
     public TransferFragment() {
@@ -53,6 +61,9 @@ public class TransferFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,6 +74,21 @@ public class TransferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_tranfer, container, false);
+        //set text sender
+        if (mUser != null) {
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ((TextView) mView.findViewById(R.id.txt_sender)).setText(document.getString("name"));
+                }
+            });
+        }
+        //set text receiver name
+        getParentFragmentManager().setFragmentResultListener("recipientNameKey", this, (requestKey, bundle) -> ((TextView)mView.findViewById(R.id.txt_receiver)).setText(bundle.getString("recipientName")));
+        //set text receiver email
+        getParentFragmentManager().setFragmentResultListener("recipientMailKey", this, (requestKey, bundle) -> ((TextView)mView.findViewById(R.id.txt_recipient_email)).setText(bundle.getString("recipientMail")));
+        //set text amount
         getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView)mView.findViewById(R.id.textView13)).setText("$"+bundle.getString("amount")));
 
         // Inflate the layout for this fragment
