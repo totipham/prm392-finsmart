@@ -56,15 +56,16 @@ public class AddNewWalletFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        walletCollectionRef = db.collection("wallets");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        currentDefaultWalletId = "";
+        walletCollectionRef = db.collection("wallets");
         View view = inflater.inflate(R.layout.fragment_add_new_wallet, container, false);
         TextView name = view.findViewById(R.id.txt_wallet);
         EditText input = view.findViewById(R.id.edt_name);
@@ -116,7 +117,7 @@ public class AddNewWalletFragment extends Fragment {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         String walletId = task.getResult().getId();
 
-                        if (switchIsDefault.isChecked() || currentDefaultWalletId.equals("")) {
+                        if (switchIsDefault.isChecked() || currentDefaultWalletId == null || currentDefaultWalletId.equals("")) {
                             Map<String, Object> user = new HashMap<>();
                             user.put("defaultWallet", walletId);
                             db.collection("users").document(mUser.getUid()).update(user);
@@ -127,9 +128,7 @@ public class AddNewWalletFragment extends Fragment {
                     }
                 });
 
-                //set default wallet
-
-
+                //start intent MainActivity
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }

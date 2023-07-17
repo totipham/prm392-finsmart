@@ -143,7 +143,7 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
         });
     }
 
-    private void loadWalletList() {
+    public void loadWalletList() {
         db.collection("wallets")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

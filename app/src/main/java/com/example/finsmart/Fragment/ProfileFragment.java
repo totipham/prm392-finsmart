@@ -1,9 +1,11 @@
 package com.example.finsmart.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finsmart.Activity.LoginActivity;
 import com.example.finsmart.Activity.MainActivity;
@@ -44,23 +47,19 @@ public class ProfileFragment extends Fragment {
 
     private TextView email, name;
     private ImageView profileImage;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
-
-    FirebaseFirestore db;
+    private String userName, userEmail, userAvatar;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
     }
 
 
@@ -68,48 +67,41 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_profile, container, false);
-        user_preference = (LinearLayout) mView.findViewById(R.id.user_preference);
-        user_logout = (LinearLayout) mView.findViewById(R.id.user_logout);
-        user_preference.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).replaceFragment(
-                        ((MainActivity) getActivity()).profilePreferenceFragment,
-                        "profilePreference", "Preferences"
-                );
-            }
-        });
-        user_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+        email = mView.findViewById(R.id.tv_email);
+        name = mView.findViewById(R.id.tv_profile_name);
+        profileImage = mView.findViewById(R.id.img_my_avatar);
+        user_preference = mView.findViewById(R.id.user_preference);
+        user_logout = mView.findViewById(R.id.user_logout);
+        user_preference.setOnClickListener(v -> ((MainActivity) getActivity()).replaceFragment(
+                ((MainActivity) getActivity()).profilePreferenceFragment,
+                "profilePreference", "Preferences"
+        ));
+        user_logout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
         });
 
-        //get email
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        if (mUser != null) {
-            email = mView.findViewById(R.id.tv_email);
-            name = mView.findViewById(R.id.tv_profile_name);
-            profileImage = mView.findViewById(R.id.img_my_avatar);
-
-            email.setText(mUser.getEmail());
-            DocumentReference docRef = db.collection("users").document(mUser.getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        name.setText(document.getString("name"));
-                        Picasso.get().load(document.getString("avatar").replace("http", "https")).into(profileImage);
-                    }
-                }
-            });
-        }
-        // Inflate the layout for this fragment
         return mView;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getUserInformation();
+    }
+
+    public void getUserInformation() {
+        userName = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_name", "");
+        userEmail = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_email", "");
+        userAvatar = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_avatar", "");
+
+        email.setText(userEmail);
+        name.setText(userName);
+
+        if (userAvatar != null) {
+            Picasso.get().load(userAvatar.replace("http", "https")).into(profileImage);
+        }
+    }
+
 }
