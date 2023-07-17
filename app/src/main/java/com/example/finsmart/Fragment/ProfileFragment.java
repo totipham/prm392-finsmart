@@ -75,27 +75,9 @@ public class ProfileFragment extends Fragment {
                 "profilePreference","Preferences"
         ));
         user_logout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
-        user_preference = (LinearLayout) mView.findViewById(R.id.user_preference);
-        user_logout = (LinearLayout) mView.findViewById(R.id.user_logout);
-        user_preference.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).replaceFragment(
-                        ((MainActivity) getActivity()).profilePreferenceFragment,
-                        "profilePreference", "Preferences"
-                );
-            }
-        });
-        user_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
         });
 
         //get email
