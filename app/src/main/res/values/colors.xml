@@ -16,4 +16,9 @@
     <color name="grey_description">#5A5B78</color>
     <color name="poseidon">#004852</color>
     <color name="spanish_gray">#969696</color>
+
+    <!--Switch Colors-->
+    <color name="disable_foreground_grey">#42221f1f</color>
+    <color name="disable_thumb_grey">#1c000000</color>
+    <color name="enable_thumb_green">#46bdbf</color>
 </resources>

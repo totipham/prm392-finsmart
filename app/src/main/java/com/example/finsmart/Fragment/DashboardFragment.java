@@ -186,6 +186,14 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
     }
 
     private void updateWalletRecyclerView(int position) {
+
+        if (walletList.size() == 0) {
+            ((TextView) getView().findViewById(R.id.tv_no_wallet_transfer)).setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+
+        ((TextView) getView().findViewById(R.id.tv_no_wallet_transfer)).setVisibility(View.GONE);
         RecyclerView walletScrollList = (RecyclerView) getView().findViewById(R.id.rview_wallet_scroll);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         layoutManager.scrollToPosition(position);

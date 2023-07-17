@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.finsmart.Activity.MainActivity;
+import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,63 +32,44 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class EditWalletFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+
+    TextView wallet;
+    EditText edtWalletName, edtWalletAmount;
+    SwitchCompat isDefault;
+
+    Wallet selectedWallet;
+    String defaultWalletId;
 
     public EditWalletFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Add_new_card.
-     */
-    // TODO: Rename and change types and number of parameters
     public static EditWalletFragment newInstance(String param1, String param2) {
-        EditWalletFragment fragment = new EditWalletFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new EditWalletFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View crap = inflater.inflate(R.layout.fragment_add_new_wallet, container, false);
-        TextView name = (TextView) crap.findViewById(R.id.txt_wallet);
-        EditText input = (EditText) crap.findViewById(R.id.edt_name);
-        EditText amount = (EditText) crap.findViewById(R.id.edt_amount);
-        input.addTextChangedListener(new TextWatcher() {
+        View view = inflater.inflate(R.layout.fragment_add_new_wallet, container, false);
+        wallet = (TextView) view.findViewById(R.id.txt_wallet);
+        edtWalletName = (EditText) view.findViewById(R.id.edt_name);
+        edtWalletAmount = (EditText) view.findViewById(R.id.edt_amount);
+        isDefault = (SwitchCompat) view.findViewById(R.id.isDefault_swt);
+
+
+        edtWalletName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // Not used in this example
@@ -93,32 +77,64 @@ public class EditWalletFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(TextUtils.isEmpty(s)){
-                    name.setText("Name here");
-                }else{
-                    name.setText(s.toString());
+                if (TextUtils.isEmpty(s)) {
+                    wallet.setText("Name here");
+                } else {
+                    wallet.setText(s.toString());
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
 
-        Button confirm = (Button) crap.findViewById(R.id.btn_confirm);
+        Button confirm = (Button) view.findViewById(R.id.btn_confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Object> card = new HashMap<>();
-                card.put("name", name.getText().toString());
-                card.put("balance", Float.parseFloat(amount.getText().toString()));
-                card.put("belongTo",mUser.getUid());
-                db.collection("wallets").add(card);
+                //Update wallet to firestore
+                Map<String, Object> wallet = new HashMap<>();
+                wallet.put("name", edtWalletName.getText().toString());
+                wallet.put("balance", Double.parseDouble(edtWalletAmount.getText().toString()));
+
+                db.collection("wallets").document(selectedWallet.getWalletId())
+                        .update(wallet);
+
+                //set default wallet to user
+                if (isDefault.isChecked()) {
+                    Toast.makeText(getActivity(), "Default wallet set", Toast.LENGTH_SHORT).show();
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("defaultWallet", selectedWallet.getWalletId());
+                    db.collection("users").document(mUser.getUid())
+                            .update(user);
+                }
+
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
         // Inflate the layout for this fragment
-        return crap;
+        return view;
+    }
+
+    public void setWallet(Wallet selectedWallet) {
+        this.selectedWallet = selectedWallet;
+
+        wallet.setText(selectedWallet.getName());
+        edtWalletName.setText(selectedWallet.getName());
+        edtWalletAmount.setText(String.valueOf(selectedWallet.getBalance()));
+
+        //check db for default wallet
+        db.collection("users").document(mUser.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        defaultWalletId = task.getResult().getString("defaultWallet");
+                        isDefault.setChecked(selectedWallet.getWalletId().equals(defaultWalletId));
+                    }
+                });
+
     }
 }

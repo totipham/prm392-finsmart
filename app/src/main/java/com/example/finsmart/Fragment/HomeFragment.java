@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.HomeActivity;
 import com.example.finsmart.Adapter.TransactionListAdapter;
 import com.example.finsmart.Adapter.WalletListAdapter;
 import com.example.finsmart.Model.Transaction;
@@ -113,7 +114,8 @@ public class HomeFragment extends Fragment {
         generateTransactionList(view);
     }
 
-    private void loadWalletList() {
+    public void loadWalletList() {
+        totalBalance = 0;
         db.collection("wallets").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -142,6 +144,12 @@ public class HomeFragment extends Fragment {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setCurrency(currency);
         ((TextView) getView().findViewById(R.id.tv_balance_amount)).setText(format.format(totalBalance));
+
+        if (walletList.size() == 0) {
+            getView().findViewById(R.id.tv_no_wallet).setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.tv_no_wallet).setVisibility(View.GONE);
+        }
 
         viewPager = (ViewPager2) getView().findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) getView().findViewById(R.id.slider_dots);
@@ -186,21 +194,43 @@ public class HomeFragment extends Fragment {
     void generateTransactionList(View view) {
         List<Transaction> transactionList = new ArrayList<>();
 
-        Transaction t1 = new Transaction("t1", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
-        Transaction t2 = new Transaction("t2", "McDonald", Transaction.TransactionType.PAYMENT, true, "34.10", R.drawable.ticket_icon);
-        Transaction t3 = new Transaction("t3", "Gym", Transaction.TransactionType.DEPOSIT, false, "40.99", R.drawable.ticket_icon);
-        Transaction t4 = new Transaction("t4", "AI-Bank", Transaction.TransactionType.DEPOSIT, false, "460.00", R.drawable.ticket_icon);
+        db.collection("transactions")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            transactionList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getString("BelongTo").equals(mUser.getUid())) {
+                                    Transaction transaction = new Transaction(
+                                            document.getString("BelongTo"),
+                                            document.getDate("Date"),
+                                            document.getString("Name"),
+                                            Transaction.TransactionType.DEPOSIT,
+                                            document.getBoolean("IsIncome"),
+                                            document.getString("Amount"),
+                                            R.drawable.ticket_icon
+                                    );
+                                    transactionList.add(transaction);
+                                }
+                            }
 
-        transactionList.add(t1);
-        transactionList.add(t2);
-        transactionList.add(t3);
-        transactionList.add(t4);
+                            if (transactionList.size() == 0) {
+                                getView().findViewById(R.id.tv_no_transaction).setVisibility(View.VISIBLE);
+                            } else {
+                                getView().findViewById(R.id.tv_no_transaction).setVisibility(View.GONE);
+                            }
 
-        TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
-        RecyclerView transactionHistoryView = (RecyclerView) view.findViewById(R.id.rview_transaction_history);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        transactionHistoryView.setLayoutManager(layoutManager);
-        transactionHistoryView.setAdapter(transactionListAdapter);
+                            TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
+                            RecyclerView transactionHistoryView = (RecyclerView) view.findViewById(R.id.rview_transaction_history);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            transactionHistoryView.setLayoutManager(layoutManager);
+                            transactionHistoryView.setAdapter(transactionListAdapter);
+                        } else {
+                            Toast.makeText(getContext(), "Error loading transaction", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
-
 }
