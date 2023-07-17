@@ -23,6 +23,7 @@ public class AmountTransferFragment extends Fragment {
 
     private View mView;
 
+    public double amount;
     public AmountTransferFragment() {
         // Required empty public constructor
     }
