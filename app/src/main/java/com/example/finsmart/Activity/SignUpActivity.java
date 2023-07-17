@@ -95,6 +95,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     Map<String, Object> user = new HashMap<>();
                                     user.put("name", name.toString());
                                     user.put("avatar", "http://res.cloudinary.com/ddr0pf043/image/upload/v1689526896/pwsz0t5xcn3dabasqrsy.png");
+                                    user.put("email", e.toString());
+                                    user.put("defaultWallet", "");
                                     db.collection("users").document(currentUser.getUid()).set(user);
                                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                     startActivity(intent);
