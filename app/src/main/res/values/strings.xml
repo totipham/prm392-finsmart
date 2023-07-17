@@ -10,4 +10,6 @@
     <string name="edit_information">Edit Information</string>
     <string name="fullname">Fullname</string>
     <string name="email">Email</string>
+    <string name="confirm">Confirm</string>
+    <string name="mark_as_default_card">Mark as default card</string>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="90dp"
+    android:paddingBottom="60dp"
     tools:context=".Activity.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,6 +62,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
+        <TextView
+            android:id="@+id/tv_no_wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You don't have any wallets"
+            android:textStyle="italic"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/slider_dots"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/view_pager"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
@@ -112,7 +124,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/poppins"
             android:lineHeight="54dp"
-            android:text="$ 13,553.00"
+            android:text="₫0.00"
             android:textColor="@color/pure_black"
             android:textFontWeight="600"
             android:textSize="36sp"
@@ -151,8 +163,22 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_transaction_history" />
+
+        <TextView
+            android:id="@+id/tv_no_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:text="You haven't had any transactions yet"
+            android:textStyle="italic"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/rview_transaction_history"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/rview_transaction_history"
+            app:layout_constraintTop_toTopOf="@+id/rview_transaction_history" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

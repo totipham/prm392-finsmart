@@ -114,7 +114,8 @@ public class HomeFragment extends Fragment {
         generateTransactionList(view);
     }
 
-    private void loadWalletList() {
+    public void loadWalletList() {
+        totalBalance = 0;
         db.collection("wallets").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -144,6 +145,13 @@ public class HomeFragment extends Fragment {
         format.setCurrency(currency);
         ((TextView) getView().findViewById(R.id.tv_balance_amount)).setText(format.format(totalBalance));
 
+        if (walletList.size() == 0) {
+            getView().findViewById(R.id.tv_no_wallet).setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            return;
+        }
+
+        getView().findViewById(R.id.tv_no_wallet).setVisibility(View.GONE);
         viewPager = (ViewPager2) getView().findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) getView().findViewById(R.id.slider_dots);
         WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
