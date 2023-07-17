@@ -10,6 +10,7 @@ import android.view.View;
 import com.cloudinary.android.MediaManager;
 import com.example.finsmart.Fragment.AddNewWalletFragment;
 import com.example.finsmart.Fragment.DashboardFragment;
+import com.example.finsmart.Fragment.EditWalletFragment;
 import com.example.finsmart.Fragment.HomeFragment;
 import com.example.finsmart.Fragment.ProfileFragment;
 import com.example.finsmart.Fragment.UpdateProfileFragment;
@@ -28,12 +29,13 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FragmentManager fragmentManager;
     String currentFragmentTag;
-    HomeFragment homeFragment;
+    public HomeFragment homeFragment;
     WalletFragment walletFragment;
     ProfileFragment profileFragment;
     DashboardFragment dashboardFragment;
     public ProfilePreferenceFragment profilePreferenceFragment;
     public AddNewWalletFragment addNewWalletFragment;
+    public EditWalletFragment editWalletFragment;
     View topNav;
 
     @Override
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 //                            replaceFragment(,"editInfo","Edit Information");
                         break;
                     case "addWallet":
+                    case "editWallet":
                         replaceFragment(walletFragment, "wallet", "Wallets");
                         break;
                     case "amountTransfer":
@@ -111,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
         profilePreferenceFragment = new ProfilePreferenceFragment();
         addNewWalletFragment = new AddNewWalletFragment();
+        editWalletFragment = new EditWalletFragment();
 
         fragmentManager.beginTransaction().add(R.id.frameLayout, homeFragment, "home").commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout, walletFragment, "wallet").commit();
@@ -123,5 +127,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().hide(profilePreferenceFragment).commitNow();
         fragmentManager.beginTransaction().add(R.id.frameLayout, addNewWalletFragment, "addWallet").commit();
         fragmentManager.beginTransaction().hide(addNewWalletFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, editWalletFragment, "editWallet").commit();
+        fragmentManager.beginTransaction().hide(editWalletFragment).commitNow();
     }
 }

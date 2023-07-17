@@ -171,6 +171,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_recipient_email" />
 
+        <TextView
+            android:id="@+id/tv_no_wallet_transfer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You don't have any wallets"
+            android:textStyle="italic"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/rview_wallet_scroll"
+            app:layout_constraintEnd_toEndOf="@+id/rview_wallet_scroll"
+            app:layout_constraintStart_toStartOf="@+id/rview_wallet_scroll"
+            app:layout_constraintTop_toTopOf="@+id/rview_wallet_scroll"
+            app:layout_constraintVertical_bias="0.3" />
+
         <!--        <ImageView-->
         <!--            android:id="@+id/imageView"-->
         <!--            android:layout_width="wrap_content"-->

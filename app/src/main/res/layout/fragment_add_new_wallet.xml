@@ -84,13 +84,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_menu" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_confirm"
             style="@style/button"
             android:layout_width="355dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Confirm"
+            android:text="@string/confirm"
+            android:background="@drawable/button_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,13 +152,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/wallet_lbl" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/isDefault_swt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
-            android:text="Mark as default card"
+            android:text="@string/mark_as_default_card"
+            style="@style/switchDefault"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_amount" />
     </androidx.constraintlayout.widget.ConstraintLayout>

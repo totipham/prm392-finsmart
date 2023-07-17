@@ -25,9 +25,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,14 +90,35 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
             @Override
             public void onClick(View v) {
                 if (selectedWallet != null) {
-                    Toast.makeText(getContext(), "Delete wallet " + selectedWallet.getName(), Toast.LENGTH_SHORT).show();
                     db.collection("wallets").document(selectedWallet.getWalletId())
                             .delete()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     loadWalletList();
+
+                                    HomeFragment homeFragment = ((MainActivity) getActivity()).homeFragment;
+                                    homeFragment.loadWalletList();
+
                                     Toast.makeText(getContext(), "Delete wallet successfully", Toast.LENGTH_SHORT).show();
+
+                                    if ((walletList.size() - 1) > 0) {
+                                        selectedWallet = walletList.get(1).getWallet();
+                                    } else {
+                                        selectedWallet = null;
+                                    }
+                                }
+                            });
+
+                    //if user default wallet is selected wallet id, then delete it
+                    db.collection("users").document(mUser.getUid()).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    String defaultWalletId = task.getResult().getString("defaultWallet");
+                                    if (defaultWalletId.equals(selectedWallet.getWalletId())) {
+                                        db.collection("users").document(mUser.getUid()).update("defaultWallet", "");
+                                    }
                                 }
                             });
                 } else {
@@ -104,6 +127,20 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
             }
         });
 
+        ((Button) view.findViewById(R.id.btn_edit_wallet)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedWallet != null) {
+                    ((MainActivity) getActivity()).replaceFragment(
+                            ((MainActivity) getActivity()).editWalletFragment
+                            , "editWallet", "Edit Wallet");
+
+                    ((EditWalletFragment) ((MainActivity) getActivity()).editWalletFragment).setWallet(selectedWallet);
+                } else {
+                    Toast.makeText(getContext(), "Please select a wallet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void loadWalletList() {
@@ -160,11 +197,4 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
         walletList.get(position).setChecked(true);
         updateWalletRecyclerView(position);
     }
-
-//    public void replaceFragment(Fragment fragment) {
-//        FragmentManager fragmentManager = this.getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.frameLayout, fragment);
-//        fragmentTransaction.commit();
-//    }
 }
