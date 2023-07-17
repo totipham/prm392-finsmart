@@ -37,7 +37,7 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         holder.tvTransactionType.setText(transactionType.substring(0, 1) + transactionType.substring(1).toLowerCase());
         holder.tvSign.setText(transactionList.get(position).isIncome() ? "+" : "-");
         holder.tvAmount.setText(" $" + transactionList.get(position).getAmount());
-        holder.ivWalletIcon.setImageResource(transactionList.get(position).getIcon());
+        holder.ivWalletIcon.setImageResource(R.drawable.ticket_icon);
     }
 
     @Override
