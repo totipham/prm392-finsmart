@@ -61,6 +61,12 @@ public class TransferFragment extends Fragment {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setCurrency(currency);
 
+        //get wallet id (walletID[0])
+        final String[] walletID = new String[1];
+        getParentFragmentManager().setFragmentResultListener("walletIDKey", this, (requestKey, bundle) -> {
+            walletID[0] = bundle.getString("walletID");
+        });
+
         mView = inflater.inflate(R.layout.fragment_tranfer, container, false);
         //set text sender
         if (mUser != null) {
