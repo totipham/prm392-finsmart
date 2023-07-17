@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FragmentManager fragmentManager;
     String currentFragmentTag;
-    HomeFragment homeFragment;
+    public HomeFragment homeFragment;
     WalletFragment walletFragment;
     ProfileFragment profileFragment;
     DashboardFragment dashboardFragment;
