@@ -9,9 +9,11 @@ import android.view.View;
 
 import com.cloudinary.android.MediaManager;
 import com.example.finsmart.Fragment.AddNewWalletFragment;
+import com.example.finsmart.Fragment.AmountTransferFragment;
 import com.example.finsmart.Fragment.DashboardFragment;
 import com.example.finsmart.Fragment.HomeFragment;
 import com.example.finsmart.Fragment.ProfileFragment;
+import com.example.finsmart.Fragment.TransferFragment;
 import com.example.finsmart.Fragment.UpdateProfileFragment;
 import com.example.finsmart.Fragment.ProfilePreferenceFragment;
 import com.example.finsmart.Fragment.WalletFragment;
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     public ProfilePreferenceFragment profilePreferenceFragment;
     public AddNewWalletFragment addNewWalletFragment;
     public UpdateProfileFragment updateProfileFragment;
+    public TransferFragment transferFragment;
+    public AmountTransferFragment amountTransferFragment;
+    public TransferFragment confirmTransferFragment;
     View topNav;
 
     @Override
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(dashboardFragment, "transfer", "Transfer");
                         break;
                     case "confirmTransfer":
-//                            replaceFragment(,"amountTransfer","Transfer");
+                        replaceFragment(amountTransferFragment,"amountTransfer","Transfer");
                         break;
                     case "transactionHistory":
                         binding.bottomNavigationView.findViewById(R.id.home).performClick();
@@ -113,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
         profilePreferenceFragment = new ProfilePreferenceFragment();
         addNewWalletFragment = new AddNewWalletFragment();
         updateProfileFragment = new UpdateProfileFragment();
+        transferFragment = new TransferFragment();
+        amountTransferFragment = new AmountTransferFragment();
+        confirmTransferFragment = new TransferFragment();
 
         fragmentManager.beginTransaction().add(R.id.frameLayout, homeFragment, "home").commit();
         fragmentManager.beginTransaction().add(R.id.frameLayout, walletFragment, "wallet").commit();
@@ -125,7 +133,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().hide(profilePreferenceFragment).commitNow();
         fragmentManager.beginTransaction().add(R.id.frameLayout, addNewWalletFragment, "addWallet").commit();
         fragmentManager.beginTransaction().hide(addNewWalletFragment).commitNow();
-        fragmentManager.beginTransaction().add(R.id.frameLayout, updateProfileFragment, "editInformation").commit();
-        fragmentManager.beginTransaction().hide(updateProfileFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, transferFragment, "1").commit();
+        fragmentManager.beginTransaction().hide(transferFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, amountTransferFragment, "amountTransfer").commit();
+        fragmentManager.beginTransaction().hide(amountTransferFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, confirmTransferFragment, "confirmTransfer").commit();
+        fragmentManager.beginTransaction().hide(confirmTransferFragment).commitNow();
+//        fragmentManager.beginTransaction().add(R.id.frameLayout, updateProfileFragment, "editInformation").commit();
+//        fragmentManager.beginTransaction().hide(updateProfileFragment).commitNow();
     }
 }

@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_continue_amount"
         style="@style/button"
         android:layout_marginTop="37dp"
         android:text="Continue"

@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.ChooseWalletAdapter;
 import com.example.finsmart.Model.User;
 import com.example.finsmart.Model.Wallet;
@@ -91,6 +92,7 @@ public class DashboardFragment extends Fragment {
                 if (isRecipientSelected) {
                     //Move to confirm transfer fragment
                     Toast.makeText(getContext(), "Move to confirm transfer fragment", Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).replaceFragment(((MainActivity)getActivity()).amountTransferFragment,"amountTransfer","Transfer");
 //                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
                 } else {
                     //get user from firebase firestore by email

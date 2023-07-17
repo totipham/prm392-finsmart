@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
 
 /**
@@ -25,6 +27,7 @@ public class AmountTransferFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View mView;
 
     public AmountTransferFragment() {
         // Required empty public constructor
@@ -51,6 +54,7 @@ public class AmountTransferFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -60,7 +64,15 @@ public class AmountTransferFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_amount_transfer, container, false);
+        mView.findViewById(R.id.btn_continue_amount).setOnClickListener(v -> {
+            Bundle result = new Bundle();
+            result.putString("amount", ((EditText)mView.findViewById(R.id.editTextNumber)).getText().toString());
+            getParentFragmentManager().setFragmentResult("amountKey", result);
+            ((MainActivity)getActivity()).replaceFragment(((MainActivity)getActivity()).confirmTransferFragment,"confirmTransfer","Transfer");
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_amount_transfer, container, false);
+        return mView;
     }
 }

@@ -67,10 +67,13 @@ public class ProfilePreferenceFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_profile_preference, container, false);
 
         account_info = mView.findViewById(R.id.ll_account_info);
-        account_info.setOnClickListener(v -> ((MainActivity)getActivity()).replaceFragment(
-                ((MainActivity) getActivity()).updateProfileFragment,
-                "editInformation","Edit Information"
-        ));
+
+        account_info.setOnClickListener(v -> {
+            ((MainActivity) getActivity()).replaceFragment(
+                    ((MainActivity) getActivity()).updateProfileFragment,
+                    "editInformation", "Edit Information"
+            );
+        });
         // Inflate the layout for this fragment
         return mView;
     }
