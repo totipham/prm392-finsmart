@@ -147,11 +147,10 @@ public class HomeFragment extends Fragment {
 
         if (walletList.size() == 0) {
             getView().findViewById(R.id.tv_no_wallet).setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            return;
+        } else {
+            getView().findViewById(R.id.tv_no_wallet).setVisibility(View.GONE);
         }
 
-        getView().findViewById(R.id.tv_no_wallet).setVisibility(View.GONE);
         viewPager = (ViewPager2) getView().findViewById(R.id.view_pager);
         sliderDotspanel = (LinearLayout) getView().findViewById(R.id.slider_dots);
         WalletListAdapter walletListAdapter = new WalletListAdapter(walletList);
@@ -215,6 +214,12 @@ public class HomeFragment extends Fragment {
                                     );
                                     transactionList.add(transaction);
                                 }
+                            }
+
+                            if (transactionList.size() == 0) {
+                                getView().findViewById(R.id.tv_no_transaction).setVisibility(View.VISIBLE);
+                            } else {
+                                getView().findViewById(R.id.tv_no_transaction).setVisibility(View.GONE);
                             }
 
                             TransactionListAdapter transactionListAdapter = new TransactionListAdapter(transactionList);
