@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.cloudinary.android.MediaManager;
 import com.example.finsmart.Fragment.AddNewWalletFragment;
@@ -32,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     String currentFragmentTag;
     public HomeFragment homeFragment;
-    WalletFragment walletFragment;
+    public WalletFragment walletFragment;
     ProfileFragment profileFragment;
-    DashboardFragment dashboardFragment;
+    public DashboardFragment dashboardFragment;
     public ProfilePreferenceFragment profilePreferenceFragment;
     public AddNewWalletFragment addNewWalletFragment;
     public UpdateProfileFragment updateProfileFragment;
@@ -43,11 +46,18 @@ public class MainActivity extends AppCompatActivity {
     public TransferFragment confirmTransferFragment;
     public EditWalletFragment editWalletFragment;
     View topNav;
+    FirebaseUser mUser;
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
+        saveUserInformation();
         currentFragmentTag = "home";
         addFragment();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -82,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(profileFragment, "profile", "Profile");
                         break;
                     case "editInformation":
-                        replaceFragment(profilePreferenceFragment,"profilePreference","Preferences");
+                        replaceFragment(profilePreferenceFragment, "profilePreference", "Preferences");
                         break;
                     case "addWallet":
                     case "editWallet":
@@ -92,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(dashboardFragment, "transfer", "Transfer");
                         break;
                     case "confirmTransfer":
-                        replaceFragment(amountTransferFragment,"amountTransfer","Transfer");
+                        replaceFragment(amountTransferFragment, "amountTransfer", "Transfer");
                         break;
                     case "transactionHistory":
                         binding.bottomNavigationView.findViewById(R.id.home).performClick();
@@ -143,9 +153,30 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().hide(amountTransferFragment).commitNow();
         fragmentManager.beginTransaction().add(R.id.frameLayout, confirmTransferFragment, "confirmTransfer").commit();
         fragmentManager.beginTransaction().hide(confirmTransferFragment).commitNow();
-//        fragmentManager.beginTransaction().add(R.id.frameLayout, updateProfileFragment, "editInformation").commit();
-//        fragmentManager.beginTransaction().hide(updateProfileFragment).commitNow();
+        fragmentManager.beginTransaction().add(R.id.frameLayout, updateProfileFragment, "editInformation").commit();
+        fragmentManager.beginTransaction().hide(updateProfileFragment).commitNow();
         fragmentManager.beginTransaction().add(R.id.frameLayout, editWalletFragment, "editWallet").commit();
         fragmentManager.beginTransaction().hide(editWalletFragment).commitNow();
     }
+
+    public void saveUserInformation() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        db.collection("users").document(mUser.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            //Toast show welcome
+            Toast.makeText(this, "Welcome " + documentSnapshot.get("name").toString(), Toast.LENGTH_SHORT).show();
+
+            editor.putString("user_name", documentSnapshot.get("name").toString());
+            editor.putString("user_email", mUser.getEmail());
+            editor.putString("user_avatar", documentSnapshot.get("avatar").toString());
+
+            editor.apply();
+
+            profileFragment.getUserInformation();
+            updateProfileFragment.getUserInformation();
+        });
+
+    }
+
 }

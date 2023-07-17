@@ -98,15 +98,18 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
                 if (isRecipientSelected) {
                     //pass recipient name
                     Bundle recipientName = new Bundle();
-                    recipientName.putString("recipientName", (txtRecipientName.getText().toString()));
+                    recipientName.putString("recipientName", (recipient.getName()));
                     getParentFragmentManager().setFragmentResult("recipientNameKey", recipientName);
                     //
                     Bundle recipientMail = new Bundle();
-                    recipientMail.putString("recipientMail", (txtRecipientEmail.getText().toString()));
+                    recipientMail.putString("recipientMail", (recipient.getEmail()));
                     getParentFragmentManager().setFragmentResult("recipientMailKey", recipientMail);
+
+                    Bundle recipientAvatar = new Bundle();
+                    recipientMail.putString("recipientAvatar", (recipient.getAvatar()));
+                    getParentFragmentManager().setFragmentResult("recipientAvatarKey", recipientMail);
                     //Move to confirm transfer fragment
-                    Toast.makeText(getContext(), "Move to confirm transfer fragment", Toast.LENGTH_SHORT).show();
-                    ((MainActivity)getActivity()).replaceFragment(((MainActivity)getActivity()).amountTransferFragment,"amountTransfer","Transfer");
+                    ((MainActivity) getActivity()).replaceFragment(((MainActivity) getActivity()).amountTransferFragment, "amountTransfer", "Transfer");
                 } else {
                     progressBarRecipient.setVisibility(View.VISIBLE);
                     edtRecipientEmail.setText(edtRecipientEmail.getText().toString().trim());
@@ -166,7 +169,7 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
         Picasso.get().load(recipient.getAvatar().replace("http", "https")).into(imvRecipientAvatar);
     }
 
-    private void loadWalletList() {
+    public void loadWalletList() {
         db.collection("wallets")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

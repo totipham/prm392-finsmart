@@ -1,5 +1,6 @@
 package com.example.finsmart.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,25 +51,29 @@ public class UpdateProfileFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     Map<String, Object> user;
+
+    String userName, userEmail, userAvatar;
     Map config;
 
     public UpdateProfileFragment() {
     }
 
-    public UpdateProfileFragment(FirebaseFirestore db, FirebaseAuth mAuth, FirebaseUser mUser) {
-        this.db = db;
-        this.mAuth = mAuth;
-        this.mUser = mUser;
-    }
-
-    public static UpdateProfileFragment newInstance(String param1, String param2) {
+    public static UpdateProfileFragment newInstance() {
         return new UpdateProfileFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        configCloudinary();
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getUserInformation();
     }
 
     @Override
@@ -76,8 +82,6 @@ public class UpdateProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_update_profile, container, false);
 
         user = new HashMap<>();
-        user.put("email", mUser.getEmail());
-
 
         progressBar = (ProgressBar) view.findViewById(R.id.progress_upload);
         progressBarView = (ProgressBar) view.findViewById(R.id.process_bar_loading);
@@ -101,37 +105,27 @@ public class UpdateProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        db.collection("users").document(mUser.getUid()).get().addOnSuccessListener(documentSnapshot -> {
-            user.put("name", documentSnapshot.get("name"));
-            user.put("avatar", documentSnapshot.get("avatar"));
-
-            bindData();
-        });
-
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 user.put("name", edtName.getText().toString());
+                user.put("email", userEmail);
                 db.collection("users").document(mUser.getUid()).set(user).addOnSuccessListener(aVoid -> {
+                    //update shared preference in MainActivity
+//                    ((MainActivity) getActivity()).saveUserInformation();
+
                     Toast.makeText(getContext(), "Update success", Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
 
-    void configCloudinary() {
-        config = new HashMap<>();
-        config.put("cloud_name", "ddr0pf043");
-        config.put("api_key", "814571977924379");
-        config.put("api_secret", "p7WjgkOnh46EF1p9iN-Aa-6X0vY");
-        config.put("secure", true);
-        MediaManager.init(getContext(), config);
-    }
-
     void bindData() {
-        edtEmail.setText(user.get("email").toString());
-        edtName.setText(user.get("name").toString());
-        Picasso.get().load(user.get("avatar").toString().replace("http", "https")).into(imvImage);
+        edtEmail.setText(userEmail);
+        edtName.setText(userName);
+        if (userAvatar != null && !userAvatar.isEmpty()) {
+            Picasso.get().load(userAvatar.replace("http", "https")).into(imvImage);
+        }
 
         progressBarView.setVisibility(View.GONE);
         loadingView.setVisibility(View.GONE);
@@ -166,13 +160,13 @@ public class UpdateProfileFragment extends Fragment {
 
             @Override
             public void onError(String requestId, ErrorInfo error) {
-                Log.d("Cloudinary", "onError: " + error.getCode() + ": " + error.getDescription());
+                Toast.makeText(getContext(), "Upload error", Toast.LENGTH_SHORT).show();
                 btnUpdate.setEnabled(true);
             }
 
             @Override
             public void onReschedule(String requestId, ErrorInfo error) {
-                Log.d("Cloudinary", "onReschedule: " + error);
+
             }
         }).dispatch();
     }
@@ -186,5 +180,13 @@ public class UpdateProfileFragment extends Fragment {
             imvImage.setImageURI(imageURI);
             uploadToCloudinary();
         }
+    }
+
+    public void getUserInformation() {
+        userName = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_name", "");
+        userEmail = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_email", "");
+        userAvatar = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_avatar", "");
+
+        bindData();
     }
 }
