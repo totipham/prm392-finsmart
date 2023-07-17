@@ -43,12 +43,12 @@
         android:drawableStart="@drawable/custome_user_icon"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Fullname"
+        android:hint="@string/fullname"
         android:inputType="textEmailAddress"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:textColorHint="#CBCBCB"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/edt_email_signup"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -61,12 +61,12 @@
         android:drawableStart="@drawable/custome_email_icon"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:textColorHint="#CBCBCB"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/edt_password_signup"
         app:layout_constraintTop_toBottomOf="@+id/edt_fullname_signup" />
 
@@ -78,9 +78,10 @@
         android:background="@drawable/custome_input_authen"
         android:drawableStart="@drawable/custome_lock_icon"
 
+        android:textSize="18sp"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"

@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
 
 /**
@@ -25,6 +27,8 @@ public class ProfilePreferenceFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View mView;
+    private LinearLayout account_info;
 
     public ProfilePreferenceFragment() {
         // Required empty public constructor
@@ -60,7 +64,17 @@ public class ProfilePreferenceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_profile_preference, container, false);
+
+        account_info = mView.findViewById(R.id.ll_account_info);
+
+        account_info.setOnClickListener(v -> {
+            ((MainActivity) getActivity()).replaceFragment(
+                    ((MainActivity) getActivity()).updateProfileFragment,
+                    "editInformation", "Edit Information"
+            );
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_preference, container, false);
+        return mView;
     }
 }

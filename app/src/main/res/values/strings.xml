@@ -12,4 +12,5 @@
     <string name="email">Email</string>
     <string name="confirm">Confirm</string>
     <string name="mark_as_default_card">Mark as default card</string>
+    <string name="password">Password</string>
 </resources>

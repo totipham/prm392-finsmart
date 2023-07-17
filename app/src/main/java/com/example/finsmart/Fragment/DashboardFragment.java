@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.Adapter.ChooseWalletAdapter;
 import com.example.finsmart.Interface.RecyclerViewClickListener;
 import com.example.finsmart.Model.User;
@@ -95,9 +96,20 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
             @Override
             public void onClick(View v) {
                 if (isRecipientSelected) {
+                    //pass recipient name
+                    Bundle recipientName = new Bundle();
+                    recipientName.putString("recipientName", (recipient.getName()));
+                    getParentFragmentManager().setFragmentResult("recipientNameKey", recipientName);
+                    //
+                    Bundle recipientMail = new Bundle();
+                    recipientMail.putString("recipientMail", (recipient.getEmail()));
+                    getParentFragmentManager().setFragmentResult("recipientMailKey", recipientMail);
+
+                    Bundle recipientAvatar = new Bundle();
+                    recipientMail.putString("recipientAvatar", (recipient.getAvatar()));
+                    getParentFragmentManager().setFragmentResult("recipientAvatarKey", recipientMail);
                     //Move to confirm transfer fragment
-                    Toast.makeText(getContext(), "Move to confirm transfer fragment", Toast.LENGTH_SHORT).show();
-//                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransferFragment()).commit();
+                    ((MainActivity) getActivity()).replaceFragment(((MainActivity) getActivity()).amountTransferFragment, "amountTransfer", "Transfer");
                 } else {
                     progressBarRecipient.setVisibility(View.VISIBLE);
                     edtRecipientEmail.setText(edtRecipientEmail.getText().toString().trim());
@@ -157,7 +169,7 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
         Picasso.get().load(recipient.getAvatar().replace("http", "https")).into(imvRecipientAvatar);
     }
 
-    private void loadWalletList() {
+    public void loadWalletList() {
         db.collection("wallets")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
