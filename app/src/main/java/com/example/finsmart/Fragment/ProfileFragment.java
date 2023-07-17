@@ -85,12 +85,6 @@ public class ProfileFragment extends Fragment {
         return mView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        getUserInformation();
-    }
-
     public void getUserInformation() {
         userName = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_name", "");
         userEmail = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_email", "");
