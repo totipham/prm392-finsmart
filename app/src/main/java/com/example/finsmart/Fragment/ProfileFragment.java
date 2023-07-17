@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -33,55 +37,29 @@ import org.w3c.dom.Text;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment{
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class ProfileFragment extends Fragment {
     private View mView;
     private LinearLayout user_preference;
     private LinearLayout user_logout;
 
     private TextView email, name;
+    private ImageView profileImage;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
     FirebaseFirestore db;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new ProfileFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
         db = FirebaseFirestore.getInstance();
     }
 
@@ -100,14 +78,34 @@ public class ProfileFragment extends Fragment{
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
+        user_preference = (LinearLayout) mView.findViewById(R.id.user_preference);
+        user_logout = (LinearLayout) mView.findViewById(R.id.user_logout);
+        user_preference.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).replaceFragment(
+                        ((MainActivity) getActivity()).profilePreferenceFragment,
+                        "profilePreference", "Preferences"
+                );
+            }
+        });
+        user_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
         });
 
         //get email
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        if(mUser != null){
+        if (mUser != null) {
             email = mView.findViewById(R.id.tv_email);
             name = mView.findViewById(R.id.tv_profile_name);
+            profileImage = mView.findViewById(R.id.img_my_avatar);
+
             email.setText(mUser.getEmail());
             DocumentReference docRef = db.collection("users").document(mUser.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -116,6 +114,7 @@ public class ProfileFragment extends Fragment{
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         name.setText(document.getString("name"));
+                        Picasso.get().load(document.getString("avatar").replace("http", "https")).into(profileImage);
                     }
                 }
             });

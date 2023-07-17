@@ -2,83 +2,163 @@ package com.example.finsmart.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finsmart.Activity.MainActivity;
+import com.example.finsmart.Adapter.EditWalletAdapter;
+import com.example.finsmart.Interface.RecyclerViewClickListener;
+import com.example.finsmart.Model.Wallet;
 import com.example.finsmart.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link WalletFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WalletFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class WalletFragment extends Fragment implements RecyclerViewClickListener {
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+    List<WalletWithCheck> walletList;
+    Wallet selectedWallet;
 
     public WalletFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WalletFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static WalletFragment newInstance(String param1, String param2) {
-        WalletFragment fragment = new WalletFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new WalletFragment();
     }
+
     ImageButton imageButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
     }
 
-    public void GetAllWallet(){
-
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View dogshit = inflater.inflate(R.layout.fragment_wallet, container, false);
+        walletList = new ArrayList<>();
+        loadWalletList();
+        View view = inflater.inflate(R.layout.fragment_wallet, container, false);
         // Inflate the layout for this fragment
-        imageButton = (ImageButton) dogshit.findViewById(R.id.add_wallet_btn);
+        imageButton = (ImageButton) view.findViewById(R.id.add_wallet_btn);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).replaceFragment(
-                        ((MainActivity)getActivity()).addNewWalletFragment
-                        ,"addWallet","Add New Wallet");
+                        ((MainActivity) getActivity()).addNewWalletFragment
+                        , "addWallet", "Add New Wallet");
             }
         });
-        return dogshit;
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((Button) view.findViewById(R.id.btn_remove_wallet)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedWallet != null) {
+                    Toast.makeText(getContext(), "Delete wallet " + selectedWallet.getName(), Toast.LENGTH_SHORT).show();
+                    db.collection("wallets").document(selectedWallet.getWalletId())
+                            .delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    loadWalletList();
+                                    Toast.makeText(getContext(), "Delete wallet successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(getContext(), "Please select a wallet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void loadWalletList() {
+        db.collection("wallets")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            walletList.clear();
+                            boolean isFirst = true;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getString("belongTo").equals(mUser.getUid())) {
+                                    Wallet wallet = new Wallet(document.getId(), document.getString("name"), document.getDouble("balance"), document.getString("belongTo"));
+
+                                    if (isFirst) {
+                                        selectedWallet = wallet;
+                                    }
+
+                                    walletList.add(new WalletWithCheck(wallet, isFirst));
+                                    isFirst = false;
+                                }
+                            }
+
+                            ((TextView) getView().findViewById(R.id.tv_my_wallet)).setText("My Wallets" + " (" + walletList.size() + ")");
+
+                            updateWalletRecyclerView(0);
+                        } else {
+                            Toast.makeText(getContext(), "Error getting wallets", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void updateWalletRecyclerView(int position) {
+        RecyclerView walletScrollList = (RecyclerView) getView().findViewById(R.id.rview_wallet_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.scrollToPosition(position);
+
+        EditWalletAdapter walletListAdapter = new EditWalletAdapter(walletList, this);
+        walletScrollList.setAdapter(walletListAdapter);
+        walletScrollList.setLayoutManager(layoutManager);
+
+//        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        selectedWallet = walletList.get(position).getWallet();
+        for (int i = 0; i < walletList.size(); i++) {
+            walletList.get(i).setChecked(false);
+        }
+        walletList.get(position).setChecked(true);
+        updateWalletRecyclerView(position);
     }
 
 //    public void replaceFragment(Fragment fragment) {
