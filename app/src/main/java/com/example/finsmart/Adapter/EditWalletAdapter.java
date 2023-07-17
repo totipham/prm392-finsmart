@@ -6,12 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finsmart.Fragment.DashboardFragment;
+import com.example.finsmart.Fragment.HomeFragment;
+import com.example.finsmart.Fragment.WalletFragment;
 import com.example.finsmart.Fragment.WalletWithCheck;
 import com.example.finsmart.Interface.RecyclerViewClickListener;
 import com.example.finsmart.R;
@@ -20,11 +21,11 @@ import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.List;
 
-public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapter.WalletListHolder> {
+public class EditWalletAdapter extends RecyclerView.Adapter<EditWalletAdapter.WalletListHolder> {
     private List<WalletWithCheck> wallets;
     private RecyclerViewClickListener listener;
 
-    public ChooseWalletAdapter(List<WalletWithCheck> walletList, DashboardFragment listener) {
+    public EditWalletAdapter(List<WalletWithCheck> walletList, WalletFragment listener) {
         this.wallets = walletList;
         this.listener = listener;
     }
@@ -33,8 +34,7 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
     @Override
     public WalletListHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.choose_wallet_list_layout, parent, false);
-        view.setLayoutParams(new ViewGroup.LayoutParams((int) (parent.getMeasuredWidth() * 0.85), ViewGroup.LayoutParams.MATCH_PARENT));
+        View view = LayoutInflater.from(context).inflate(R.layout.edit_wallet_list_layout, parent, false);
 
         return new WalletListHolder(view);
     }
@@ -44,8 +44,8 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
         Currency currency = Currency.getInstance("VND");
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setCurrency(currency);
-        holder.tvWalletName.setText(wallets.get(position).getName() + " Wallet");
-        holder.tvWalletBalance.setText(format.format(wallets.get(position).getBalance()));
+        holder.tvWalletName.setText(wallets.get(position).getName());
+//        holder.tvWalletBalance.setText(format.format(wallets.get(position).getBalance()));
 
         if (wallets.get(position).isChecked) {
             holder.imvCheck.setVisibility(View.VISIBLE);
@@ -63,8 +63,6 @@ public class ChooseWalletAdapter extends RecyclerView.Adapter<ChooseWalletAdapte
         TextView tvWalletName;
         TextView tvWalletBalance;
         ImageView imvCheck;
-
-        public boolean isWalletChecked;
 
         public WalletListHolder(@NonNull View itemView) {
             super(itemView);

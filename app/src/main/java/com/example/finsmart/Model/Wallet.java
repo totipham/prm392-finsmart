@@ -6,6 +6,13 @@ public class Wallet {
     private double balance;
 
     private String belongTo;
+
+    public Wallet(String walletId, String name, double balance) {
+        this.walletId = walletId;
+        this.name = name;
+        this.balance = balance;
+    }
+
     public Wallet(String walletId, String name, double balance, String belongTo) {
         this.walletId = walletId;
         this.name = name;

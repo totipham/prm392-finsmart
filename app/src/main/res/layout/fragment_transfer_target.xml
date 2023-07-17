@@ -159,6 +159,18 @@
             app:layout_constraintStart_toStartOf="@+id/rview_wallet_scroll"
             app:layout_constraintTop_toTopOf="@+id/rview_wallet_scroll" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_recipient"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_recipient_email" />
+
         <!--        <ImageView-->
         <!--            android:id="@+id/imageView"-->
         <!--            android:layout_width="wrap_content"-->
@@ -166,6 +178,8 @@
         <!--            app:srcCompat="@drawable/ic_launcher_background"-->
         <!--            tools:layout_editor_absoluteX="176dp"-->
         <!--            tools:layout_editor_absoluteY="446dp" />-->
+
+        <!--Overlay-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
