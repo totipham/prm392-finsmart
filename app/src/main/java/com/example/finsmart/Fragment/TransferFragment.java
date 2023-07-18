@@ -12,16 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.finsmart.Activity.MainActivity;
+import com.example.finsmart.Model.User;
 import com.example.finsmart.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.NumberFormat;
 import java.util.Currency;
@@ -36,6 +43,10 @@ public class TransferFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     View mView;
+
+    String recipientEmail, recipientWalletID;
+    Double amount;
+    final String[] walletID = new String[1];
 
     Button confirm;
     public TransferFragment() {
@@ -62,7 +73,7 @@ public class TransferFragment extends Fragment {
         format.setCurrency(currency);
 
         //get wallet id (walletID[0])
-        final String[] walletID = new String[1];
+
         getParentFragmentManager().setFragmentResultListener("walletIDKey", this, (requestKey, bundle) -> {
             walletID[0] = bundle.getString("walletID");
         });
@@ -79,20 +90,37 @@ public class TransferFragment extends Fragment {
             });
         }
         //set text receiver name
-        getParentFragmentManager().setFragmentResultListener("recipientNameKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.txt_receiver)).setText(bundle.getString("recipientName")));
+        getParentFragmentManager().setFragmentResultListener("recipientNameKey", this, (requestKey, bundle) ->
+                ((TextView) mView.findViewById(R.id.txt_receiver)).setText(bundle.getString("recipientName")));
         //set text receiver email
-        getParentFragmentManager().setFragmentResultListener("recipientMailKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.txt_recipient_email)).setText(bundle.getString("recipientMail")));
+        getParentFragmentManager().setFragmentResultListener("recipientMailKey", this, (requestKey, bundle) ->
+        {
+
+            recipientEmail = bundle.getString("recipientMail");
+            ((TextView) mView.findViewById(R.id.txt_recipient_email)).setText(recipientEmail);
+        });
         //set text amount
         getParentFragmentManager().setFragmentResultListener("amountKey", this, (requestKey, bundle) -> ((TextView) mView.findViewById(R.id.textView13)).setText(format.format(Double.parseDouble(bundle.getString("amount")))));
 
         confirm = mView.findViewById(R.id.btn_edit_wallet);
 
+        //
+        final String[] a = new String[1];
+        getParentFragmentManager().setFragmentResultListener("recipientDefaultWalletIDKey", this, (requestKey, bundle) ->
+        {
+
+            a[0] = bundle.getString("recipientDefaultWalletID");
+        });
+
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference docRef = db.collection("wallets").document("Se4oEhLRQg8cANcT8aGn");
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
+                DocumentReference mineRef = db.collection("wallets").document(walletID[0]);
+                mineRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -101,18 +129,42 @@ public class TransferFragment extends Fragment {
                                 if(document.getDouble("balance") > 0){
                                     String amount = ((TextView) mView.findViewById(R.id.textView13)).getText().toString();
                                     amount = amount.replaceAll("[^\\d]", "");
-                                    Log.d("Amount", amount);
-                                    double amountdouble = Double.parseDouble(amount)/100;
-                                    double result = document.getDouble("balance") - amountdouble;
+                                    double amountDou = Double.parseDouble(amount)/100;
+                                    double result = document.getDouble("balance") - amountDou;
 
                                     //update field value
-                                    docRef.update("balance", result);
+                                    mineRef.update("balance", result);
 
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                 }
                             } else {
                                 Log.d("Firebase", "Cannot find that wallet");
+                            }
+                        }
+                    }
+                });
+                DocumentReference recipientRef = db.collection("wallets").document(a[0]);
+
+                recipientRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                    String amount = ((TextView) mView.findViewById(R.id.textView13)).getText().toString();
+                                    amount = amount.replaceAll("[^\\d]", "");
+                                    double amountDou = Double.parseDouble(amount)/100;
+                                    recipientWalletID = document.getString("defaultWallet");
+                                    double result = document.getDouble("balance") + amountDou;
+
+                                    //update field value
+                                    recipientRef.update("balance", result);
+
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
+                            } else {
+                                Log.d("Firebase", "Your recipient doesn't have wallet");
                             }
                         }
                     }

@@ -48,7 +48,8 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
     EditText edtRecipientEmail;
     TextView txtRecipientName, txtRecipientEmail;
     ImageView imvRecipientAvatar;
-    User recipient;
+    String recipientDefaultWalletID;
+            User recipient;
     boolean isRecipientSelected = false;
     Wallet selectedWallet;
 
@@ -151,6 +152,11 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
                                         String recipientName = task.getResult().getDocuments().get(0).getString("name");
                                         String recipientEmail = task.getResult().getDocuments().get(0).getString("email");
                                         String recipientAvatar = task.getResult().getDocuments().get(0).getString("avatar");
+                                        recipientDefaultWalletID = task.getResult().getDocuments().get(0).getString("defaultWallet");
+
+                                        Bundle recipientDefauWallet = new Bundle();
+                                        recipientDefauWallet.putString("recipientDefaultWalletID", recipientDefaultWalletID);
+                                        getParentFragmentManager().setFragmentResult("recipientDefaultWalletIDKey", recipientDefauWallet);
 
                                         recipient = new User(recipientId, recipientName, recipientEmail, recipientAvatar);
 
