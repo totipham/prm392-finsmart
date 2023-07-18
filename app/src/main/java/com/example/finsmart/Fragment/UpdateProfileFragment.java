@@ -27,6 +27,8 @@ import com.example.finsmart.Activity.MainActivity;
 import com.example.finsmart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -52,7 +54,7 @@ public class UpdateProfileFragment extends Fragment {
     FirebaseUser mUser;
     Map<String, Object> user;
 
-    String userName, userEmail, userAvatar;
+    String userName, userEmail, userAvatar, userDefaultWallet;
     Map config;
 
     public UpdateProfileFragment() {
@@ -108,8 +110,12 @@ public class UpdateProfileFragment extends Fragment {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 user.put("name", edtName.getText().toString());
                 user.put("email", userEmail);
+                user.put("avatar", userAvatar);
+                user.put("defaultWallet", userDefaultWallet);
+
                 db.collection("users").document(mUser.getUid()).set(user).addOnSuccessListener(aVoid -> {
                     //update shared preference in MainActivity
 //                    ((MainActivity) getActivity()).saveUserInformation();
@@ -187,7 +193,7 @@ public class UpdateProfileFragment extends Fragment {
         userName = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_name", "");
         userEmail = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_email", "");
         userAvatar = this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_avatar", "");
-
+        userDefaultWallet= this.getActivity().getSharedPreferences("FinSmartPref", Context.MODE_PRIVATE).getString("user_wallet", "");
         bindData();
     }
 }
