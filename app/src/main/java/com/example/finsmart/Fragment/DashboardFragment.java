@@ -97,32 +97,37 @@ public class DashboardFragment extends Fragment implements RecyclerViewClickList
             @Override
             public void onClick(View v) {
                 if (isRecipientSelected) {
-                    //pass recipient name for tranfer frag
-                    Bundle recipientName = new Bundle();
-                    recipientName.putString("recipientName", (recipient.getName()));
-                    getParentFragmentManager().setFragmentResult("recipientNameKey", recipientName);
-                    //pass recipient email for transfer frag
-                    Bundle recipientMail = new Bundle();
-                    recipientMail.putString("recipientMail", (recipient.getEmail()));
-                    getParentFragmentManager().setFragmentResult("recipientMailKey", recipientMail);
-                    //pass recipient email for amount frag
-                    getParentFragmentManager().setFragmentResult("recipientMailKey1", recipientMail);
-                    //pass recipient name amount frag
-                    getParentFragmentManager().setFragmentResult("recipientNameKey1", recipientName);
-                    //pass max amount for transfer frag
-                    Bundle maxAmount = new Bundle();
-                    maxAmount.putString("maxAmount", String.valueOf(selectedWallet.getBalance()));
-                    getParentFragmentManager().setFragmentResult("maxAmountKey", maxAmount);
-                    //pass wallet id
-                    Bundle walletID = new Bundle();
-                    walletID.putString("walletID", String.valueOf(selectedWallet.getWalletId()));
-                    getParentFragmentManager().setFragmentResult("walletIDKey", walletID);
+                    if(selectedWallet == null){
+                        Toast.makeText(getContext(), "You have no wallet!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        //pass recipient name for tranfer frag
+                        Bundle recipientName = new Bundle();
+                        recipientName.putString("recipientName", (recipient.getName()));
+                        getParentFragmentManager().setFragmentResult("recipientNameKey", recipientName);
+                        //pass recipient email for transfer frag
+                        Bundle recipientMail = new Bundle();
+                        recipientMail.putString("recipientMail", (recipient.getEmail()));
+                        getParentFragmentManager().setFragmentResult("recipientMailKey", recipientMail);
+                        //pass recipient email for amount frag
+                        getParentFragmentManager().setFragmentResult("recipientMailKey1", recipientMail);
+                        //pass recipient name amount frag
+                        getParentFragmentManager().setFragmentResult("recipientNameKey1", recipientName);
+                        //pass max amount for transfer frag
+                        Bundle maxAmount = new Bundle();
+                        maxAmount.putString("maxAmount", String.valueOf(selectedWallet.getBalance()));
+                        getParentFragmentManager().setFragmentResult("maxAmountKey", maxAmount);
+                        //pass wallet id
+                        Bundle walletID = new Bundle();
+                        walletID.putString("walletID", String.valueOf(selectedWallet.getWalletId()));
+                        getParentFragmentManager().setFragmentResult("walletIDKey", walletID);
 
-                    Bundle recipientAvatar = new Bundle();
-                    recipientMail.putString("recipientAvatar", (recipient.getAvatar()));
-                    getParentFragmentManager().setFragmentResult("recipientAvatarKey", recipientMail);
-                    //Move to confirm transfer fragment
-                    ((MainActivity) getActivity()).replaceFragment(((MainActivity) getActivity()).amountTransferFragment, "amountTransfer", "Transfer");
+                        Bundle recipientAvatar = new Bundle();
+                        recipientMail.putString("recipientAvatar", (recipient.getAvatar()));
+                        getParentFragmentManager().setFragmentResult("recipientAvatarKey", recipientMail);
+                        //Move to confirm transfer fragment
+                        ((MainActivity) getActivity()).replaceFragment(((MainActivity) getActivity()).amountTransferFragment, "amountTransfer", "Transfer");
+                    }
+
                 } else {
                     progressBarRecipient.setVisibility(View.VISIBLE);
                     edtRecipientEmail.setText(edtRecipientEmail.getText().toString().trim());
