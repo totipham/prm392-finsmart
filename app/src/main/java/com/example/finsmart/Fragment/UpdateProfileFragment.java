@@ -113,7 +113,8 @@ public class UpdateProfileFragment extends Fragment {
                 db.collection("users").document(mUser.getUid()).set(user).addOnSuccessListener(aVoid -> {
                     //update shared preference in MainActivity
 //                    ((MainActivity) getActivity()).saveUserInformation();
-
+                    ((MainActivity)getActivity()).homeFragment.loadWelcomeName();
+                    ((MainActivity)getActivity()).confirmTransferFragment.loadWelcomeName();
                     Toast.makeText(getContext(), "Update success", Toast.LENGTH_SHORT).show();
                 });
             }
