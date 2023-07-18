@@ -175,4 +175,16 @@ public class TransferFragment extends Fragment {
         return mView;
 
     }
+
+    public void loadWelcomeName(){
+        if (mUser != null) {
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ((TextView) mView.findViewById(R.id.txt_sender)).setText(document.getString("name"));
+                }
+            });
+        }
+    }
 }

@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("user_name", documentSnapshot.get("name").toString());
             editor.putString("user_email", mUser.getEmail());
             editor.putString("user_avatar", documentSnapshot.get("avatar").toString());
+            editor.putString("user_wallet", documentSnapshot.get("defaultWallet").toString());
 
             editor.apply();
 

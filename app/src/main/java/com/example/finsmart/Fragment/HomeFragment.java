@@ -233,4 +233,16 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
+    public void loadWelcomeName(){
+        if (mUser != null) {
+            DocumentReference docRef = db.collection("users").document(mUser.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    wellcomename.setText(document.getString("name") + "!");
+                }
+            });
+        }
+    }
 }

@@ -99,6 +99,8 @@ public class WalletFragment extends Fragment implements RecyclerViewClickListene
 
                                     HomeFragment homeFragment = ((MainActivity) getActivity()).homeFragment;
                                     homeFragment.loadWalletList();
+                                    DashboardFragment dashboardFragment = ((MainActivity) getActivity()).dashboardFragment;
+                                    dashboardFragment.loadWalletList();
 
                                     Toast.makeText(getContext(), "Delete wallet successfully", Toast.LENGTH_SHORT).show();
 
